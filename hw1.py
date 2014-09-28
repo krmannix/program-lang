@@ -2,24 +2,22 @@ import json
 import re
 
 
-def tokenize(tlist, inputs, *args):
-    spchars = ['\\', '+', '*', '(', ')']
-    tstring = "\s+"
+def tokenize(input,s):
+    #creates a tokenize string
+    spch = ["\\", "^", "$", ":=", ">", "<", ".", "|", ";", "#", "@", ",", "?", "*", "+", "(", ")", "[", "]", "{", "}"]
 
-    for term in tlist:
-        # Special chars cause run-time errors, don't include them at this point
-        if term not in spchars:
-            tstring += "|" + term
+    tstring = "\s+|[0-9]+"
 
     # Now add the special chars with backslashes in front
-    for ch in spchars:
-        if ch in tlist:
-            tstring += "|\\" + ch
-    print(tstring)
+    for i in input:
+        if i in spch:
+            i = '\\' + i
 
-    # We should now have the full terminal list
-    tokens = [t for t in re.split(r'('+tstring+')', inputs)]
+            tstring += "|" + i
 
+    tokens = [token for token in re.split(r"("+tstring+")", s)]
+
+    # Throw out the spaces and return the result.
     return [t for t in tokens if not t.isspace() and not t == ""]
 
 
@@ -54,86 +52,196 @@ def directions(dirs):
 
 def number(tokens):
     if re.match(r"^([1-9][0-9]*)$", tokens[0]):
-        return ({"Number": [int(tokens[0])]}, tokens[1:])
+        return ({"Number": [int(tokens.pop(0))]}, tokens)
+    else:
+        return None
 
 
 def variable(tokens):
     if re.match(r"^[A-Za-z]*$", tokens[0]):
-        return ({"Variable": [tokens[0]]}, tokens[1:])
+        return ({"Variable": [tokens.pop(0)]}, tokens)
+    else:
+        return None
 
 
 def term(tokens):
-    goodterms = ["log", "mult", "plus", "#", "@", "(", ")"]
-    if tokens[0] in goodterms:
-        token = tokens.pop(0)
-        if token is not 0: # Make sure input has been good
-            if token == "mult":
-                return ({'Mult': term(tokens)}, tokens)
-            elif token == "log":
-                return ({'Log': term(tokens)}, tokens)
-            elif token == "(":
-                tokens.pop(0)
-                rarray = []
-                for index, t in enumerate(tokens):
-                    if t is "#":
-                        rarray.append(number(tokens[index+1])[0])
-                    elif t is "@":
-                        rarray.append(variable(tokens[index+1])[0])
-                    elif t is "mult" or "log":
-                        rarray.append(term(tokens))
-        else:
-            return None
+    tok = tokens.pop(0)
+    if tok == "#":
+        return number(tokens)
+    elif tok == "@":
+        return variable(tokens)
+    elif tok == "plus" and tokens.pop(0) == "(":
+        (r, tokens) = term(tokens)  # Get the first entry
+        if tokens.pop(0) == ",": #  Check for right syntax
+            (s, tokens) = term(tokens)
+            if tokens.pop(0) == ")":
+                return ({"Plus": [r, s]}, tokens)
+    elif tok == "mult" and tokens.pop(0) == "(":
+        (r, tokens) = term(tokens)  # Get the first entry
+        if tokens.pop(0) == ",": #  Check for right syntax
+            (s, tokens) = term(tokens)
+            if tokens.pop(0) == ")":
+                return ({"Mult": [r, s]}, tokens)
+    elif tok == "log" and tokens.pop(0) == "(":
+        (r, tokens) = term(tokens)
+        if tokens.pop(0) == ")":
+            return ({"Log": [r]}, tokens)
+    elif tok == "(":
+        (r, tokens) = term(tokens)
+        if r is not None:
+            tok = tokens.pop(0)
+            if tok == "+":
+                (s, tokens) = term(tokens)
+                if tokens.pop(0) == ")":
+                    return ({"Plus": [r, s]}, tokens)
+            elif tok == "*":
+                (s, tokens) = term(tokens)
+                if tokens.pop(0) == ")":
+                    return ({"Mult": [r, s]}, tokens)
     else:
-        return None
+        return None, None
+
+    return None, None
 
 
 def formula(tokens):
-    goodterms = ["true", "false", "not", "and", "or", "equal", "less", "than", "greater"]
-    token = tokens.pop(0)
-    if token in goodterms:
-        if token == "less":
-            return ({"LessThan": tokens}, tokens)
-        elif token == "greater":
-            return ({"GreaterThan": tokens}, tokens)
-        elif token == "true":
-            return ({"True": tokens}, tokens)
-        elif token == "false":
-            return ({"False": tokens}, tokens)
-        elif token == "not":
-            return ({"Not": tokens}, tokens)
-        else: ##  token == "or":
-            return ({"Or": tokens}, tokens)
+    formulas = ["&&", "||", "true", "false"]
+    terms = ["==", "<", ">", "#", "@", "log"]
+    tok = tokens.pop(0)
+    if tok == "true":
+        return "True", tokens
+    elif tok == "false":
+        return "False", tokens
+    elif tok == "less" and tokens.pop(0) == "(":
+        (r, tokens) = term(tokens)
+        if tokens.pop(0) == ",":
+            (s, tokens) = term(tokens)
+            if tokens.pop(0) == ")":
+                return ({"LessThan": [r, s]}, tokens)
+    elif tok == "greater" and tokens.pop(0) == "(":
+        (r, tokens) = term(tokens)
+        if tokens.pop(0) == ",":
+            (s, tokens) = term(tokens)
+            if tokens.pop(0) == ")":
+                return ({"GreaterThan": [r, s]}, tokens)
+    elif tok == "equal" and tokens.pop(0) == "(":
+        (r, tokens) = term(tokens)
+        if tokens.pop(0) == ",":
+            (s, tokens) = term(tokens)
+            if tokens.pop(0) == ")":
+                return ({"Equal": [r, s]}, tokens)
+    elif tok == "and" and tokens.pop(0) == "(":
+        (r, tokens) = formula(tokens)
+        if tokens.pop(0) == ",":
+            (s, tokens) = formula(tokens)
+            if tokens.pop(0) == ")":
+                return ({"And": [r, s]}, tokens)
+    elif tok == "or" and tokens.pop(0) == "(":
+        (r, tokens) = formula(tokens)
+        if tokens.pop(0) == ",":
+            (s, tokens) = formula(tokens)
+            if tokens.pop(0) == ")":
+                return ({"Or": [r, s]}, tokens)
+    elif tok == "not" and tokens.pop(0) == "(":
+        (r, tokens) = formula(tokens)
+        if r is not None:
+            if tokens.pop(0) == ")":
+                    return ({"Not": [r]}, tokens)
+    elif tok == "(":
+
+        if tokens[0] in terms:
+            (r, tokens) = term(tokens)
+            tok = tokens.pop(0)
+            if tok == "==":
+                (s, tokens) = term(tokens)
+                if tokens.pop(0) == ")":
+                    return ({"Equal": [r, s]}, tokens)
+            elif tok == "<":
+                (s, tokens) = term(tokens)
+                if tokens.pop(0) == ")":
+                    return ({"LessThan": [r, s]}, tokens)
+            elif tok == ">":
+                (s, tokens) = term(tokens)
+                if tokens.pop(0) == ")":
+                    return ({"GreaterThan": [r, s]}, tokens)
+        elif tokens[0] in formulas:
+            (r, tokens) = formula(tokens)
+            tok = tokens.pop(0)
+            if tok == "||":
+                (s, tokens) = formula(tokens)
+                if tokens.pop(0) == ")":
+                    return ({"Or": [r, s]}, tokens)
+            elif tok == "&&":
+                (s, tokens) = formula(tokens)
+                if tokens.pop(0) == ")":
+                    return ({"And": [r, s]}, tokens)
     else:
-        return None
+        return None, None
+
+    return None, None
 
 
 def program(tokens):
-    goodterms = ["print", "assign", "end"]
-    token = tokens.pop(0)
-    if token in goodterms:
-        if token == "print":
-            return ({"Print": tokens}, tokens)
-        elif token == "assign":
-            return ({"Assign": tokens}, tokens)
+    formulas = ["true", "false", "not", "and", "or", "equal", "less", "greater"]
+    programs = ["print", "assign", "end"]
+    terms = ["plus", "mult", "log", "@", "#"]
+    tok = tokens.pop(0)
+    if tok == "end" and tokens.pop(0) == ";":
+        return "End"
+    elif tok == "assign" and tokens.pop(0) == "@":
+        r, tokens = variable(tokens)
+        if tokens.pop(0) == ":=":
+            s, tokens = term(tokens)
+            if tokens.pop(0) == ";":
+                return ({"Assign": [r, s, program(tokens)]})
+    elif tok == "print":
+        tok = tokens[0]
+        if tok in formulas:
+            (r, tokens) = formula(tokens)
+            if tokens.pop(0) == ";":
+                return ({"Print":[r, program(tokens)]})
+        elif tok in terms:
+            (r, tokens) = term(tokens)
+            if tokens.pop(0) == ";":
+                return ({"Print":[r, program(tokens)]})
         else:
-            return ({"End"}, tokens)
+            org = tokens[0:] # This was giving me a bug for a while. Didn't realize it created a reference and not a copy
+            (r, tokens) = formula(tokens)
+            if r is not None and tokens.pop(0) == ";":
+                return ({"Print":[r, program(tokens)]})
+            else:
+                (r, tokens) = term(org)
+                if r != None:
+                    if tokens.pop(0) == ";":
+                        return ({"Print":[r, program(tokens)]})
+    else:
+        return None, None
+
+    return None, None
+
 
 
 def complete(input):
+
+    tokens = tokenize(['print', 'assign', 'end', 'true', 'false',
+                   'not', 'and', 'or', 'equal', 'less', 'than',
+                   'greater', 'plus', 'mult', 'log', '@', '#', ';',
+                   ':=', '(', ')', ',', '+', '*', '&&', "||",
+                   "==", "<", ">"], input)
+
+    programs = ["print", "assign", "end"]
+    formulas = ["true", "false", "not", "and", "or", "equal", "less", "greater"]
+    terms = ["plus", "mult", "log", "@", "#"]
+
     #  Get rid of all the "thans"
-    tokens = tokenize(["print", "assign","end", "true", "false", "not", "and",
-                       "or", "equal", "less", "than", "greater", "plus",
-                       "mult", "log", "@", "#", "(", ")", ";", ":=", "=="], input)
     while "than" in tokens: tokens.remove("than") # Get rid of all the extra "than" tokens
-    for token in tokens:
-        print(token)
 
-    return parse(tokens)
-
-
-def parse(tokens):
-
-    if len(tokens) is not 0:
-        if tokens[0] == "print" or tokens[0] == "assign" or tokens[0] =="end":
-            (e1, tokens) = program(tokens)
+    if tokens[0] in programs:
+        return program(tokens)
+    elif tokens[0] in formulas:
+        return formula(tokens)
+    elif tokens[0] in terms:
+        return term(tokens)
+    else:
+        return None
 
