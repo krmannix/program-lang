@@ -3,8 +3,10 @@ from math import log, floor
 
 def variable(ts):
     if type(ts[0]) is str:
+        if ts[0] == 'false' or ts[0] == 'true' or ts[0] == 'xor' or ts[0] == 'not':
+            return None, None
         try:
-            float(ts[0][0])
+            int(ts[0][0])
             return None, None
         except ValueError:
             if ts[0][0].islower():
@@ -18,7 +20,7 @@ def number(ts):
         return ts[0], ts[1:]
     else:
         try:
-            return float(ts[0]), ts[1:]
+            return int(ts[0]), ts[1:]
         except ValueError:
             return None, None
 
@@ -28,7 +30,7 @@ def formula(ts):
     e1, ts = left(ts)
 
     if e1 == None or ts == None:
-        return None
+        return None, None
 
     elif len(ts) != 0:
         if ts[0] == 'xor':
@@ -73,7 +75,7 @@ def term(ts):
     e1, ts = factor(ts)
 
     if e1 == None or ts == None:
-        return None
+        return None, None
 
     elif len(ts) != 0:
         if ts[0] == '+':
@@ -87,11 +89,11 @@ def factor(ts):
     e1, ts = leftfactor(ts)
 
     if e1 == None or ts == None:
-        return None
+        return None, None
 
     elif len(ts) != 0:
         if ts[0] == '*':
-            e2, ts = factor(ts[1:])
+            e2, ts = factor(ts[1:]) # Put check for ; here?
             return ({'Mult': [e1, e2]}, ts)
 
     return e1, ts
@@ -143,10 +145,11 @@ def check(name, function, inputs_result_pairs):
 
 
 def expression(token):
-    e1, t1 = formula(token)
-    e2, t2 = term(token)
+    if len(token) > 1:
+        e1, t1 = formula(token)
+        e2, t2 = term(token)
 
-    if e1 is not None:
+    if (e1 is not None and t2 is None) or not (t2[0] == ";" or t2[0] == "{" or t2[0] == "}"):
         return e1, t1
     elif e2 is not None:
         return e2, t2
@@ -158,17 +161,45 @@ def program(ts):
         e1, ts = expression(ts[1:])
         if ts[0] == ";":
             if (len(ts) > 1):
-                return {"Print": [e1, program(ts[1:])]}, []
+                return {"Print": [e1, "End"]}, ts[1:]
             else:
                 return {"Print": [e1, "End"]}, []
     elif ts[0] == "assign":
         e1, ts = expression(ts[1:])
         if ts[0] == ":=":
             e2, ts = expression(ts[1:])
+            if ts[0] == ";" and len(ts) == 1:
+                return {"Assign": [e1, e2]}, []
+                print("l")
+            elif ts[0] == ";" and len(ts) > 1:
+                if ts[1] == "}":
+                    return {"Assign": [e1, e2]}, ts[1:]
+                else:
+                    return {"Assign": [e1, e2, program(ts[1:])[0]]}, []
+                print("l")
     elif ts[0] == "if":
-        return "print"
+        e1, ts = expression(ts[1:])
+        if ts[0] == "{":
+            e2, ts = program(ts[1:])
+            if ts[0] == "}":
+                e3, ts = program(ts[1:]) # Possibly check for more ts here?
+                if len(ts) > 1:
+                    return {"If": [e1, e2, e3]}, ts
+                else:
+                    return {"If": [e1, e2, e3]}, []
     elif ts[0] == "while":
-        return "print"
+        e1, ts = expression(ts[1:])
+        if ts[0] == "{":
+            e2, ts = program(ts[1:])
+            if ts[0] == "}":
+                if len(ts) is 1:
+                    return {"While:" [e1, e2]}, []
+                else:
+                    e3, ts = program(ts[1:])
+                    if len(ts) > 1:
+                        return {"While": [e1, e2, e3]}, ts
+                    else:
+                        return {"While": [e1, e2, e3]}, []
     elif ts[0] == "":
         return "End"
 
@@ -178,11 +209,11 @@ try: program
 except: print("The program() function is not defined.")
 else: check('program', program, [\
     # (["print true ;".split(" ")], ({'Print': ['True', 'End']}, [])),\
-    (["assign x := 3 + 4 ; print x * x ;".split(" ")], ({'Assign': [{'Variable': ['x']}, {'Plus': [{'Number': [3]}, {'Number': [4]}]}, {'Print': [{'Mult': [{'Variable': ['x']}, {'Variable': ['x']}]}, 'End']}]}, [])),\
+    # (["assign x := 3 + 4 ; print x * x ;".split(" ")], ({'Assign': [{'Variable': ['x']}, {'Plus': [{'Number': [3]}, {'Number': [4]}]}, {'Print': [{'Mult': [{'Variable': ['x']}, {'Variable': ['x']}]}, 'End']}]}, [])),\
     # (["assign x := true xor false ; print false ;".split(" ")], ({'Assign': [{'Variable': ['x']}, {'Xor': ['True', 'False']}, {'Print': ['False', 'End']}]}, [])),\
     # (["if true { print 1 ; } print 0 ;".split(" ")], ({'If': ['True', {'Print': [{'Number': [1]}, 'End']}, {'Print': [{'Number': [0]}, 'End']}]}, [])),\
     # (["while true { if false { print 0 ; } print 1 ; } print 2 ;".split(" ")], ({'While': ['True', {'If': ['False', {'Print': [{'Number': [0]}, 'End']}, {'Print': [{'Number': [1]}, 'End']}]}, {'Print': [{'Number': [2]}, 'End']}]}, [])),\
-    # (["assign x := 1 + 2 ; while false { assign y := a xor b ; }".split(" ")], ({'Assign': [{'Variable': ['x']}, {'Plus': [{'Number': [1]}, {'Number': [2]}]}, {'While': ['False', {'Assign': [{'Variable': ['y']}, {'Xor': [{'Variable': ['a']}, {'Variable': ['b']}]}, 'End']}, 'End']}]}, [])),\
+    (["assign x := 1 + 2 ; while false { assign y := a xor b ; }".split(" ")], ({'Assign': [{'Variable': ['x']}, {'Plus': [{'Number': [1]}, {'Number': [2]}]}, {'While': ['False', {'Assign': [{'Variable': ['y']}, {'Xor': [{'Variable': ['a']}, {'Variable': ['b']}]}, 'End']}, 'End']}]}, [])),\
     # ([[]], ('End', [])),\
     # (["print 1 + 2 + log ( z ) + 0 ; assign y := 1 + 2 + log ( z ) + 0 ; print log ( 4 ) + y ;".split(" ")], ({'Print': [{'Plus': [{'Number': [1]}, {'Plus': [{'Number': [2]}, {'Plus': [{'Log': [{'Variable': ['z']}]}, {'Number': [0]}]}]}]}, {'Assign': [{'Variable': ['y']}, {'Plus': [{'Number': [1]}, {'Plus': [{'Number': [2]}, {'Plus': [{'Log': [{'Variable': ['z']}]}, {'Number': [0]}]}]}]}, {'Print': [{'Plus': [{'Log': [{'Number': [4]}]}, {'Variable': ['y']}]}, 'End']}]}]}, [])),\
     # (["assign x := true ; while x { assign x := false ; } print x ;".split(" ")], ({'Assign': [{'Variable': ['x']}, 'True', {'While': [{'Variable': ['x']}, {'Assign': [{'Variable': ['x']}, 'False', 'End']}, {'Print': [{'Variable': ['x']}, 'End']}]}]}, [])),\
