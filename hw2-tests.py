@@ -40,21 +40,21 @@ def check(name, function, inputs_result_pairs):
 #     ([["-456"]],(-456, [])),\
 #     ])
 
-print("Problem #1, part (b), formula()...")
-try: formula
-except: print("The formula() function is not defined.")
-else: check('formula', formula, [\
-    # (["true".split(" ")], ('True', [])),\
-    # (["false".split(" ")], ('False', [])),\
-    (["true xor false".split(" ")], ({'Xor': ['True', 'False']}, [])),\
-    # (["( true xor false )".split(" ")], ({'Parens': [{'Xor': ['True', 'False']}]}, [])),\
-    # (["not ( true ) xor false".split(" ")], ({'Xor': [{'Not': ['True']}, 'False']}, [])),\
-    # (["x".split(" ")], ({'Variable': ['x']}, [])),\
-    # (["x xor not ( y )".split(" ")], ({'Xor': [{'Variable': ['x']}, {'Not': [{'Variable': ['y']}]}]}, [])),\
-    # (["true xor false xor true xor false".split(" ")], ({'Xor': ['True', {'Xor': ['False', {'Xor': ['True', 'False']}]}]}, [])),\
-    # (["x xor y xor not ( z ) xor true".split(" ")], ({'Xor': [{'Variable': ['x']}, {'Xor': [{'Variable': ['y']}, {'Xor': [{'Not': [{'Variable': ['z']}]}, 'True']}]}]}, [])),\
-    # (["not ( a xor b ) xor true".split(" ")], ({'Xor': [{'Not': [{'Xor': [{'Variable': ['a']}, {'Variable': ['b']}]}]}, 'True']}, [])),\
-    ])
+# print("Problem #1, part (b), formula()...")
+# try: formula
+# except: print("The formula() function is not defined.")
+# else: check('formula', formula, [\
+#     (["true".split(" ")], ('True', [])),\
+#     (["false".split(" ")], ('False', [])),\
+#     (["true xor false".split(" ")], ({'Xor': ['True', 'False']}, [])),\
+#     (["( true xor false )".split(" ")], ({'Parens': [{'Xor': ['True', 'False']}]}, [])),\
+#     (["not ( true ) xor false".split(" ")], ({'Xor': [{'Not': ['True']}, 'False']}, [])),\
+#     (["x".split(" ")], ({'Variable': ['x']}, [])),\
+#     (["x xor not ( y )".split(" ")], ({'Xor': [{'Variable': ['x']}, {'Not': [{'Variable': ['y']}]}]}, [])),\
+#     (["true xor false xor true xor false".split(" ")], ({'Xor': ['True', {'Xor': ['False', {'Xor': ['True', 'False']}]}]}, [])),\
+#     (["x xor y xor not ( z ) xor true".split(" ")], ({'Xor': [{'Variable': ['x']}, {'Xor': [{'Variable': ['y']}, {'Xor': [{'Not': [{'Variable': ['z']}]}, 'True']}]}]}, [])),\
+#     (["not ( a xor b ) xor true".split(" ")], ({'Xor': [{'Not': [{'Xor': [{'Variable': ['a']}, {'Variable': ['b']}]}]}, 'True']}, [])),\
+#     ])
 
 # print("Problem #1, part (c), term()...")
 # try: term
@@ -73,20 +73,20 @@ else: check('formula', formula, [\
 #     (["log ( a * b ) * 2".split(" ")], ({'Mult': [{'Log': [{'Mult': [{'Variable': ['a']}, {'Variable': ['b']}]}]}, {'Number': [2]}]}, [])),\
 #     ])
 #
-# print("Problem #1, part (d), program()...")
-# try: program
-# except: print("The program() function is not defined.")
-# else: check('program', program, [\
-#     (["print true ;".split(" ")], ({'Print': ['True', 'End']}, [])),\
-#     (["assign x := 3 + 4 ; print x * x ;".split(" ")], ({'Assign': [{'Variable': ['x']}, {'Plus': [{'Number': [3]}, {'Number': [4]}]}, {'Print': [{'Mult': [{'Variable': ['x']}, {'Variable': ['x']}]}, 'End']}]}, [])),\
-#     (["assign x := true xor false ; print false ;".split(" ")], ({'Assign': [{'Variable': ['x']}, {'Xor': ['True', 'False']}, {'Print': ['False', 'End']}]}, [])),\
-#     (["if true { print 1 ; } print 0 ;".split(" ")], ({'If': ['True', {'Print': [{'Number': [1]}, 'End']}, {'Print': [{'Number': [0]}, 'End']}]}, [])),\
-#     (["while true { if false { print 0 ; } print 1 ; } print 2 ;".split(" ")], ({'While': ['True', {'If': ['False', {'Print': [{'Number': [0]}, 'End']}, {'Print': [{'Number': [1]}, 'End']}]}, {'Print': [{'Number': [2]}, 'End']}]}, [])),\
-#     (["assign x := 1 + 2 ; while false { assign y := a xor b ; }".split(" ")], ({'Assign': [{'Variable': ['x']}, {'Plus': [{'Number': [1]}, {'Number': [2]}]}, {'While': ['False', {'Assign': [{'Variable': ['y']}, {'Xor': [{'Variable': ['a']}, {'Variable': ['b']}]}, 'End']}, 'End']}]}, [])),\
-#     ([[]], ('End', [])),\
-#     (["print 1 + 2 + log ( z ) + 0 ; assign y := 1 + 2 + log ( z ) + 0 ; print log ( 4 ) + y ;".split(" ")], ({'Print': [{'Plus': [{'Number': [1]}, {'Plus': [{'Number': [2]}, {'Plus': [{'Log': [{'Variable': ['z']}]}, {'Number': [0]}]}]}]}, {'Assign': [{'Variable': ['y']}, {'Plus': [{'Number': [1]}, {'Plus': [{'Number': [2]}, {'Plus': [{'Log': [{'Variable': ['z']}]}, {'Number': [0]}]}]}]}, {'Print': [{'Plus': [{'Log': [{'Number': [4]}]}, {'Variable': ['y']}]}, 'End']}]}]}, [])),\
-#     (["assign x := true ; while x { assign x := false ; } print x ;".split(" ")], ({'Assign': [{'Variable': ['x']}, 'True', {'While': [{'Variable': ['x']}, {'Assign': [{'Variable': ['x']}, 'False', 'End']}, {'Print': [{'Variable': ['x']}, 'End']}]}]}, [])),\
-#     ])
+print("Problem #1, part (d), program()...")
+try: program
+except: print("The program() function is not defined.")
+else: check('program', program, [\
+    (["print true ;".split(" ")], ({'Print': ['True', 'End']}, [])),\
+    # (["assign x := 3 + 4 ; print x * x ;".split(" ")], ({'Assign': [{'Variable': ['x']}, {'Plus': [{'Number': [3]}, {'Number': [4]}]}, {'Print': [{'Mult': [{'Variable': ['x']}, {'Variable': ['x']}]}, 'End']}]}, [])),\
+    # (["assign x := true xor false ; print false ;".split(" ")], ({'Assign': [{'Variable': ['x']}, {'Xor': ['True', 'False']}, {'Print': ['False', 'End']}]}, [])),\
+    # (["if true { print 1 ; } print 0 ;".split(" ")], ({'If': ['True', {'Print': [{'Number': [1]}, 'End']}, {'Print': [{'Number': [0]}, 'End']}]}, [])),\
+    # (["while true { if false { print 0 ; } print 1 ; } print 2 ;".split(" ")], ({'While': ['True', {'If': ['False', {'Print': [{'Number': [0]}, 'End']}, {'Print': [{'Number': [1]}, 'End']}]}, {'Print': [{'Number': [2]}, 'End']}]}, [])),\
+    # (["assign x := 1 + 2 ; while false { assign y := a xor b ; }".split(" ")], ({'Assign': [{'Variable': ['x']}, {'Plus': [{'Number': [1]}, {'Number': [2]}]}, {'While': ['False', {'Assign': [{'Variable': ['y']}, {'Xor': [{'Variable': ['a']}, {'Variable': ['b']}]}, 'End']}, 'End']}]}, [])),\
+    # ([[]], ('End', [])),\
+    # (["print 1 + 2 + log ( z ) + 0 ; assign y := 1 + 2 + log ( z ) + 0 ; print log ( 4 ) + y ;".split(" ")], ({'Print': [{'Plus': [{'Number': [1]}, {'Plus': [{'Number': [2]}, {'Plus': [{'Log': [{'Variable': ['z']}]}, {'Number': [0]}]}]}]}, {'Assign': [{'Variable': ['y']}, {'Plus': [{'Number': [1]}, {'Plus': [{'Number': [2]}, {'Plus': [{'Log': [{'Variable': ['z']}]}, {'Number': [0]}]}]}]}, {'Print': [{'Plus': [{'Log': [{'Number': [4]}]}, {'Variable': ['y']}]}, 'End']}]}]}, [])),\
+    # (["assign x := true ; while x { assign x := false ; } print x ;".split(" ")], ({'Assign': [{'Variable': ['x']}, 'True', {'While': [{'Variable': ['x']}, {'Assign': [{'Variable': ['x']}, 'False', 'End']}, {'Print': [{'Variable': ['x']}, 'End']}]}]}, [])),\
+    ])
 #
 # print("Problem #2, part (a), evalTerm()...")
 # try: evalTerm
