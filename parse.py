@@ -157,11 +157,17 @@ def expression(token):
         return None, None
 
 def program(ts):
-    if ts[0] == "print":
+    if ts is None or len(ts) is 0:
+        return "End", []
+    elif ts[0] == "print":
         e1, ts = expression(ts[1:])
         if ts[0] == ";":
             if (len(ts) > 1):
-                return {"Print": [e1, "End"]}, ts[1:]
+                if ts[1] == "}":
+                    return {"Print": [e1, "End"]}, ts[1:]
+                else:
+                    e2, ts = program(ts[1:])
+                    return {"Print": [e1, e2]}, ts
             else:
                 return {"Print": [e1, "End"]}, []
     elif ts[0] == "assign":
@@ -170,13 +176,12 @@ def program(ts):
             e2, ts = expression(ts[1:])
             if ts[0] == ";" and len(ts) == 1:
                 return {"Assign": [e1, e2]}, []
-                print("l")
             elif ts[0] == ";" and len(ts) > 1:
                 if ts[1] == "}":
-                    return {"Assign": [e1, e2]}, ts[1:]
+                    return {"Assign": [e1, e2, "End"]}, ts[1:]
                 else:
-                    return {"Assign": [e1, e2, program(ts[1:])[0]]}, []
-                print("l")
+                    e3, ts = program(ts[1:])
+                    return {"Assign": [e1, e2, e3]}, []
     elif ts[0] == "if":
         e1, ts = expression(ts[1:])
         if ts[0] == "{":
@@ -193,28 +198,12 @@ def program(ts):
             e2, ts = program(ts[1:])
             if ts[0] == "}":
                 if len(ts) is 1:
-                    return {"While:" [e1, e2]}, []
+                    return {"While": [e1, e2, "End"]}, []
                 else:
                     e3, ts = program(ts[1:])
                     if len(ts) > 1:
                         return {"While": [e1, e2, e3]}, ts
                     else:
                         return {"While": [e1, e2, e3]}, []
-    elif ts[0] == "":
-        return "End"
-
-
-print("Problem #1, part (d), program()...")
-try: program
-except: print("The program() function is not defined.")
-else: check('program', program, [\
-    # (["print true ;".split(" ")], ({'Print': ['True', 'End']}, [])),\
-    # (["assign x := 3 + 4 ; print x * x ;".split(" ")], ({'Assign': [{'Variable': ['x']}, {'Plus': [{'Number': [3]}, {'Number': [4]}]}, {'Print': [{'Mult': [{'Variable': ['x']}, {'Variable': ['x']}]}, 'End']}]}, [])),\
-    # (["assign x := true xor false ; print false ;".split(" ")], ({'Assign': [{'Variable': ['x']}, {'Xor': ['True', 'False']}, {'Print': ['False', 'End']}]}, [])),\
-    # (["if true { print 1 ; } print 0 ;".split(" ")], ({'If': ['True', {'Print': [{'Number': [1]}, 'End']}, {'Print': [{'Number': [0]}, 'End']}]}, [])),\
-    # (["while true { if false { print 0 ; } print 1 ; } print 2 ;".split(" ")], ({'While': ['True', {'If': ['False', {'Print': [{'Number': [0]}, 'End']}, {'Print': [{'Number': [1]}, 'End']}]}, {'Print': [{'Number': [2]}, 'End']}]}, [])),\
-    (["assign x := 1 + 2 ; while false { assign y := a xor b ; }".split(" ")], ({'Assign': [{'Variable': ['x']}, {'Plus': [{'Number': [1]}, {'Number': [2]}]}, {'While': ['False', {'Assign': [{'Variable': ['y']}, {'Xor': [{'Variable': ['a']}, {'Variable': ['b']}]}, 'End']}, 'End']}]}, [])),\
-    # ([[]], ('End', [])),\
-    # (["print 1 + 2 + log ( z ) + 0 ; assign y := 1 + 2 + log ( z ) + 0 ; print log ( 4 ) + y ;".split(" ")], ({'Print': [{'Plus': [{'Number': [1]}, {'Plus': [{'Number': [2]}, {'Plus': [{'Log': [{'Variable': ['z']}]}, {'Number': [0]}]}]}]}, {'Assign': [{'Variable': ['y']}, {'Plus': [{'Number': [1]}, {'Plus': [{'Number': [2]}, {'Plus': [{'Log': [{'Variable': ['z']}]}, {'Number': [0]}]}]}]}, {'Print': [{'Plus': [{'Log': [{'Number': [4]}]}, {'Variable': ['y']}]}, 'End']}]}]}, [])),\
-    # (["assign x := true ; while x { assign x := false ; } print x ;".split(" ")], ({'Assign': [{'Variable': ['x']}, 'True', {'While': [{'Variable': ['x']}, {'Assign': [{'Variable': ['x']}, 'False', 'End']}, {'Print': [{'Variable': ['x']}, 'End']}]}]}, [])),\
-    ])
+    else:
+        return None
