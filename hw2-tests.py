@@ -110,30 +110,30 @@ def check(name, function, inputs_result_pairs):
 #     ([{'x':True, 'y':False}, {'Xor': [{'Not':[{'Variable': ['y']}]}, {'Variable': ['x']}]}], False),\
 #     ])
 #
-print("Problem #2, part (c), execProgram()...")
-try: execProgram
-except: print("The execProgram() function is not defined.")
-else: check('execProgram', execProgram, [\
-    # ([{}, 'End'], ({}, [])),\
-    # ([{}, {'Print': ['False', 'End']}], ({}, [False])),\
-    # ([{'y':False}, {'Print': [{'Not':[{'Variable':['y']}]}, 'End']}], ({'y': False}, [True])),\
-    # ([{'x':123}, {'Assign': [{'Variable': ['x']}, 'True', {'Print': [{'Variable': ['x']}, 'End']}]}], ({'x': True}, [True])),\
-    ([{}, {'Assign': [{'Variable': ['x']}, 'True', {'If': [{'Variable': ['x']}, {'While': [{'Not': [{'Variable': ['x']}]}, {'Print': [{'Number': [123]}, 'End']}, 'End']}, {'Print': [{'Variable': ['x']}, 'End']}]}]}], ({'x': True}, [True])),\
-    ])
-#
-# print("Problem #2, part (d), interpret()...")
-# try: interpret
-# except: print("The interpret() function is not defined.")
-# else: check('interpret', interpret, [\
-#     (["print true;"], [True]),\
-#     (["print 1 + 2 + 3;"], [6]),\
-#     (["assign x := 3+4 ; print x*x+1;"], [50]),\
-#     (["assign x := true; if x { print x; } print x;"], [True, True]),\
-#     (["assign x := true; while x { print x; assign x := false; } print x;"], [True, False]),\
-#     ([""], []),\
-#     (["assign x := true; if x { while not ( x ) { print 123; } } print x;"], [True]),\
-#     (["assign x := true; if x { while x xor false { print 123; assign x := x xor true; } } print x;"], [123, False]),\
-#     (["assign x := true; assign y := true; while x { while y { print x; assign y := x xor y; } assign x := x xor true; } print x; print y;"], [True, False, False]),\
+# print("Problem #2, part (c), execProgram()...")
+# try: execProgram
+# except: print("The execProgram() function is not defined.")
+# else: check('execProgram', execProgram, [\
+#     ([{}, 'End'], ({}, [])),\
+#     ([{}, {'Print': ['False', 'End']}], ({}, [False])),\
+#     ([{'y':False}, {'Print': [{'Not':[{'Variable':['y']}]}, 'End']}], ({'y': False}, [True])),\
+#     ([{'x':123}, {'Assign': [{'Variable': ['x']}, 'True', {'Print': [{'Variable': ['x']}, 'End']}]}], ({'x': True}, [True])),\
+#     ([{}, {'Assign': [{'Variable': ['x']}, 'True', {'If': [{'Variable': ['x']}, {'While': [{'Not': [{'Variable': ['x']}]}, {'Print': [{'Number': [123]}, 'End']}, 'End']}, {'Print': [{'Variable': ['x']}, 'End']}]}]}], ({'x': True}, [True])),\
 #     ])
+#
+print("Problem #2, part (d), interpret()...")
+try: interpret
+except: print("The interpret() function is not defined.")
+else: check('interpret', interpret, [\
+    (["print true;"], [True]),\
+    (["print 1 + 2 + 3;"], [6]),\
+    (["assign x := 3+4 ; print x*x+1;"], [50]),\
+    (["assign x := true; if x { print x; } print x;"], [True, True]),\
+    (["assign x := true; while x { print x; assign x := false; } print x;"], [True, False]),\
+    ([""], []),\
+    (["assign x := true; if x { while not ( x ) { print 123; } } print x;"], [True]),\
+    (["assign x := true; if x { while x xor false { print 123; assign x := x xor true; } } print x;"], [123, False]),\
+    (["assign x := true; assign y := true; while x { while y { print x; assign y := x xor y; } assign x := x xor true; } print x; print y;"], [True, False, False]),\
+    ])
 
 #eof

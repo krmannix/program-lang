@@ -1,5 +1,5 @@
-import math
-
+import math, re
+from parse import program
 # Do I need to return env each time??
 
 def evalTerm(env, t):
@@ -86,22 +86,101 @@ def execProgram(env, s):
                 if evalFormula(env, children[0]):
                     if children[1] is not None:
                         if children[2] is not None:
-                            e1 = execProgram(env, children[1])
-                            e2 = execProgram(env, children[2])
-                            return e1, e2
+                            env, e1 = execProgram(env, children[1])
+                            env, e2 = execProgram(env, children[2])
+                            o = []
+                            for i in e1:
+                                if i:
+                                    o.append(i)
+                            for j in e2:
+                                if j:
+                                    o.append(j)
+                            return env, o
                         else:
-                            return execProgram(env, children[1])
+                            env, e3 = execProgram(env, children[1])
+                            return env, e3
+                    else:
+                        return None, None
                 else:
                     return None
-            #elif label == "While":
-
-
+            elif label == "While":
+                o = []
+                if evalFormula(env, children[0]): # Children 0 is condition, children 1 in loop, children 2 after
+                    env2, e1 = execProgram(env, children[1])
+                    if e1 is not None:
+                        o.append(e1)
+                    env3, e2 = execProgram(env2, s)
+                    if e2:
+                        o.append(e2)
+                if children[2] is not None:
+                    env, e3 = execProgram(env3, children[2])
+                    if e3 is not None:
+                        o.append(e3)
+                return env, o
     else:
         if s == "End":
             return env, []
 
 
+def tokenize(input,s):
+    #creates a tokenize string
+    spch = ["\\", "^", "$", ":=", ">", "<", ".", "|", ";", "#", "@", ",", "?", "*", "+", "(", ")", "[", "]", "{", "}"]
 
+    tstring = "\s+|[0-9]+"
+
+    # Now add the special chars with backslashes in front
+    for i in input:
+        if i in spch:
+            i = '\\' + i
+
+            tstring += "|" + i
+
+    tokens = [token for token in re.split(r"("+tstring+")", s)]
+
+    # Throw out the spaces and return the result.
+    return [t for t in tokens if not t.isspace() and not t == ""]
+
+
+def interpret(s):
+    t = tokenize(['print', 'assign', 'end', 'true', 'false',
+                   'not', 'and', 'or', 'equal', 'less', 'than',
+                   'greater', 'plus', 'mult', 'log', '@', '#', ';',
+                   ':=', '(', ')', ',', '+', '*', '&&', "||",
+                   "==", "<", ">"], s)
+
+    pt, throwaway = program(t)
+    env, e = execProgram({}, pt)
+    if e is not None:
+        return e
+    else:
+        return None
+
+def check(name, function, inputs_result_pairs):
+    passed = 0
+    for (inputs, result) in inputs_result_pairs:
+        try:
+            output = function(inputs[0], inputs[1]) if len(inputs) == 2 else function(inputs[0])
+        except:
+            output = None
+
+        if output == result: passed = passed + 1
+        else: print("\n  Failed on:\n    "+name+"("+', '.join([str(i) for i in inputs])+")\n\n"+"  Should be:\n    "+str(result)+"\n\n"+"  Returned:\n    "+str(output)+"\n")
+    print("Passed " + str(passed) + " of " + str(len(inputs_result_pairs)) + " tests.")
+    print("")
+
+try: interpret
+except: print("The interpret() function is not defined.")
+else: check('interpret', interpret, [\
+    # (["print true;"], [True]),\
+    # (["print 1 + 2 + 3;"], [6]),\
+    # (["assign x := 3+4 ; print x*x+1;"], [50]),\
+    # (["assign x := true; if x { print x; } print x;"], [True, True]),\
+    # (["assign x := true; while x { print x; assign x := false; } print x;"], [True, False]),\
+    # ([""], []),\
+    # (["assign x := true; if x { while not ( x ) { print 123; } } print x;"], [True]),\
+    # (["assign x := true; if x { while x xor false { print 123; assign x := x xor true; } } print x;"], [123, False]),\
+    (["assign x := true; assign y := true; while x { while y { print x; assign y := x xor y; } assign x := x xor true; } print x; print y;"], [True, False, False]),\
+    ])
 
 
 
