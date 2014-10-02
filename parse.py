@@ -41,14 +41,12 @@ def formula(ts):
 
 
 def left(ts):
-    if ts[0] == 'not':
-        e1, ts = fparenthesis(ts[1:])
-        return {'Not': [e1]}, ts
-
     if ts[0] == '(':
-        e1, ts = fparenthesis(ts)
+        e1, ts = paren_(ts)
         return {'Parens': [e1]}, ts
-
+    elif ts[0] == 'not':
+        e1, ts = paren_(ts[1:])
+        return {'Not': [e1]}, ts
     elif ts[0] == 'true':
         return 'True', ts[1:]
 
@@ -62,7 +60,7 @@ def left(ts):
         return None, None
 
 
-def fparenthesis(ts):
+def paren_(ts):
     if ts[0] == '(':
         e1, ts = formula(ts[1:])
         if ts[0] == ')':
@@ -195,6 +193,17 @@ def program(ts):
     elif ts[0] == "while":
         e1, ts = expression(ts[1:])
         if ts[0] == "{":
+            e2, ts = program(ts[1:])
+            if ts[0] == "}":
+                if len(ts) is 1:
+                    return {"While": [e1, e2, "End"]}, []
+                else:
+                    e3, ts = program(ts[1:])  ###!!!!!
+                    if len(ts) > 1:
+                        return {"While": [e1, e2, e3]}, ts
+                    else:
+                        return {"While": [e1, e2, e3]}, []
+        elif ts[0] == "not":
             e2, ts = program(ts[1:])
             if ts[0] == "}":
                 if len(ts) is 1:

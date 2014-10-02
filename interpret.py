@@ -58,11 +58,25 @@ def execProgram(env, s):
                 f = evalFormula(env, children[0])
 
                 if t is not None:
-                    return env, [t]
+                    if children[1]:
+                        env2, t_ = execProgram(env, children[1])
+                        if t_:
+                            return env2, [t, t_]
+                        else:
+                            return env2, [t]
+                    else:
+                        return env, [t]
                 elif f is not None:
-                    return env, [f]
+                    if children[1]:
+                        env2, f_ = execProgram(env, children[1])
+                        if f_:
+                            return env2, [f, f_]
+                        else:
+                            return env2, [f]
+                    else:
+                        return env, [f]
                 else:
-                    return None
+                    return None, None
             elif label == "Assign":
                 var = children[0]["Variable"][0]
                 if var is not None:
@@ -71,17 +85,22 @@ def execProgram(env, s):
                     if t is not None:
                         env[var] = t
                         if children[2] is not None:
-                            return execProgram(env, children[2])
+                            env2, l = execProgram(env, children[2])
+                            if l:
+                                return env2, l
+                            else:
+                                return env2, []
                         else:
                             return env, []
                     elif f is not None:
                         env[var] = f
                         if children[2] is not None:
-                            return execProgram(env, children[2])
+                            env, p = execProgram(env, children[2])
+                            return env, p
                         else:
                             return env, []
                     else:
-                        return None
+                        return None, None
             elif label == "If":
                 if evalFormula(env, children[0]):
                     if children[1] is not None:
@@ -102,21 +121,15 @@ def execProgram(env, s):
                     else:
                         return None, None
                 else:
-                    return None
+                    return None, None
             elif label == "While":
-                o = []
-                if evalFormula(env, children[0]): # Children 0 is condition, children 1 in loop, children 2 after
+                if evalFormula(env, children[0]):
                     env2, e1 = execProgram(env, children[1])
-                    if e1 is not None:
-                        o.append(e1)
-                    env3, e2 = execProgram(env2, s)
-                    if e2:
-                        o.append(e2)
-                if children[2] is not None:
-                    env, e3 = execProgram(env3, children[2])
-                    if e3 is not None:
-                        o.append(e3)
-                return env, o
+                    env3, e2 = execProgram(env2, children[2])
+                    return env3, e1 + e2
+                else:
+                    env2, e2 = execProgram(env, children[2])
+                    return env2, e2
     else:
         if s == "End":
             return env, []
@@ -143,44 +156,16 @@ def tokenize(input,s):
 
 def interpret(s):
     t = tokenize(['print', 'assign', 'end', 'true', 'false',
-                   'not', 'and', 'or', 'equal', 'less', 'than',
+                   'not', 'while', 'and', 'or', 'equal', 'less', 'than',
                    'greater', 'plus', 'mult', 'log', '@', '#', ';',
                    ':=', '(', ')', ',', '+', '*', '&&', "||",
                    "==", "<", ">"], s)
-
     pt, throwaway = program(t)
     env, e = execProgram({}, pt)
     if e is not None:
         return e
     else:
         return None
-
-def check(name, function, inputs_result_pairs):
-    passed = 0
-    for (inputs, result) in inputs_result_pairs:
-        try:
-            output = function(inputs[0], inputs[1]) if len(inputs) == 2 else function(inputs[0])
-        except:
-            output = None
-
-        if output == result: passed = passed + 1
-        else: print("\n  Failed on:\n    "+name+"("+', '.join([str(i) for i in inputs])+")\n\n"+"  Should be:\n    "+str(result)+"\n\n"+"  Returned:\n    "+str(output)+"\n")
-    print("Passed " + str(passed) + " of " + str(len(inputs_result_pairs)) + " tests.")
-    print("")
-
-try: interpret
-except: print("The interpret() function is not defined.")
-else: check('interpret', interpret, [\
-    # (["print true;"], [True]),\
-    # (["print 1 + 2 + 3;"], [6]),\
-    # (["assign x := 3+4 ; print x*x+1;"], [50]),\
-    # (["assign x := true; if x { print x; } print x;"], [True, True]),\
-    # (["assign x := true; while x { print x; assign x := false; } print x;"], [True, False]),\
-    # ([""], []),\
-    # (["assign x := true; if x { while not ( x ) { print 123; } } print x;"], [True]),\
-    # (["assign x := true; if x { while x xor false { print 123; assign x := x xor true; } } print x;"], [123, False]),\
-    (["assign x := true; assign y := true; while x { while y { print x; assign y := x xor y; } assign x := x xor true; } print x; print y;"], [True, False, False]),\
-    ])
 
 
 
