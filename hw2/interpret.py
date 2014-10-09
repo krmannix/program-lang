@@ -1,5 +1,8 @@
-import math, re
-from parse import program
+import math
+import re
+
+from hw2.parse import program
+
 # Do I need to return env each time??
 
 def evalTerm(env, t):
