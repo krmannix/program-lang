@@ -13,7 +13,9 @@ def check(name, function, inputs_result_pairs):
         except:
             output = None
 
-        if output == result: passed = passed + 1
+        if output == result:
+            passed = passed + 1
+            print(result)
         else: print("\n  Failed on:\n    "+name+"("+', '.join([str(i) for i in inputs])+")\n\n"+"  Should be:\n    "+str(result)+"\n\n"+"  Returned:\n    "+str(output)+"\n")
     print("Passed " + str(passed) + " of " + str(len(inputs_result_pairs)) + " tests.")
     print("")

@@ -56,4 +56,60 @@ def copy(frm, to):
       'copy'\
    ]
 
+def set(addr, val):
+    return ['set ' + addr + ' ' + val]
+
+
+# Go through the list of address and set to zero, then return those functions
+def setZero(addrs):
+    instrs = []
+    for x in addrs:
+        instrs += ['set ' + x + ' 0']
+    return instrs
+
+
+def increment(addr):
+    instrs = [] # Initialize instructions
+    instrs += set(1, 1)
+    instrs += copy(addr, 2)
+    instrs += ['add']
+    instrs += copy(0, addr)
+    instrs += setZero([0, 1, 2, 3, 4])
+    return instrs
+
+# Same as increment, just uses negative 1 instead
+def decrement(addr):
+    instrs = [] # Initialize instructions
+    instrs += set(1, -1)
+    instrs += copy(addr, 2)
+    instrs += ['add']
+    instrs += copy(0, addr)
+    instrs += setZero([0, 1, 2, 3, 4])
+    return instrs
+
+def call(name):
+    instrs = []
+    instrs += decrement(7) # Increase stack size
+    instrs += copy(7, 4)
+    instrs += ['set 3 6']
+    instrs += increment(3) # Inside 3 should have the value that will be placed at the top of the call stack
+    instrs += 'copy' # Copy this updated address to top of the call stack
+    instrs += ['goto', name]
+    instrs += increment(7)
+    instrs += setZero([0, 1, 2, 3, 4])
+    return instrs
+
+def procedure(name, body):
+    labelStart = name + '_start'
+    labelEnd = name + '_end'
+    instrs = []
+    instrs += ['goto' + labelEnd]
+    instrs += ['label' + labelStart]
+    instrs += body
+    # Get the address at the top of the stack currently
+    instrs += copy(7, 4)
+    instrs += ['jump' + 4]
+    instrs += ['label' + labelEnd]
+    return instrs
+
 # eof
