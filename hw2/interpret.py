@@ -1,7 +1,7 @@
 import math
 import re
 
-from hw2.parse import program
+exec(open('parse.py').read())
 
 # Do I need to return env each time??
 
