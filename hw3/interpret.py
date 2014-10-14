@@ -18,27 +18,102 @@ def evalTerm(env, t):
             if label == "Number":
                 return env, children[0]
             elif label == "Plus":
-                return env, evalTerm(env, children[0]) + evalTerm(env, children[1])
+                return env, evalTerm(env, children[0])[1] + evalTerm(env, children[1])[1]
             elif label == "Variable":
                 if env[children[0]] is not None:
-                    return env, env[children[0]]
+                    env, s = evalExpression(env, env[children[0]])
+                    return env, s
                 else:
-                    return None
+                    return env, None
             elif label == "Log":
                 return env, math.log(evalTerm(env, children[0]), 2)
             elif label == "Mult":
-                return env, evalTerm(env, children[0]) * evalTerm(env, children[1])
+                return env, evalTerm(env, children[0])[1] * evalTerm(env, children[1])[1]
             else:
-                return None
+                return None, None
+    else:
+        return None, None
 
+# I don't believe any Formulas other than "Variable can change the env" - this is important for logical operations
 def evalFormula(env, e):
-    pass # Complete for Problem #1, part (b).			
+    if type(e) is dict:
+        for label in e:
+            children = e[label]
+            if label == "Variable":
+                if env[children[0]] is not None:
+                    env, s = evalExpression(env, env[children[0]])
+                    return env, s
+                else:
+                    return env, None
+            elif label == "Not":
+                return env, not evalFormula(env, children[0])[1]
+            elif label == "Xor":
+                return env, evalFormula(env, children[0])[1] != evalFormula(env, children[1])[1]
+            elif label == "And":
+                return env, evalFormula(env, children[0])[1] and evalFormula(env, children[1])[1]
+            elif label == "Or":
+                return env, evalFormula(env, children[0])[1] or evalFormula(env, children[1])[1]
+            else:
+                return env, None
+    else:
+        if e == "True":
+                return env, True
+        elif e == "False":
+                return env, False
+        else:
+            return env, None
 
 def evalExpression(env, e): # Useful helper function.
-    pass
+    envTerm, t = evalTerm(env, e)
+    envForm, f = evalFormula(env, e)
+    if t is not None:
+        return env, t
+    elif f is not None:
+        return env, f
+    else:
+        return None, None
 
 def execProgram(env, s):
-    pass # Complete for Problem #1, part (c).
+    print(env)
+    print(s)
+    if type(s) is dict:
+        for label in s:
+            children = s[label]
+            # print(children)
+            if label == "Print": # Might have to do a check for "End"
+                env, t = evalExpression(env, children[0])
+                if children[1] is not None:
+                    env, s = execProgram(env, children[1])
+                    return env, [t] + s
+                else:
+                    return env, [t]
+            elif label == "Assign":
+                var = children[0]["Variable"][0] # Get variable name
+                val = children[1] # Get the expression. This won't be evaluated until the variable is called
+                env[var] = val
+                if children[2]:
+                    env, g = execProgram(env, children[2])
+                    return env, g
+                else:
+                    return None, None
+            elif label == "If":
+                env, t = evalExpression(env, children[0])
+                if (t):
+                    env, g = execProgram(env, children[1])
+                    if children[2]:
+                        env, h = execProgram(env, children[2])
+                        return env, g + h
+                    else:
+                        return env, g
+                else:
+                    if children[2]:
+                        env, h = execProgram(env, children[2])
+                        return env, h
+                    else:
+                        return env, []
+
+    if s == "End":
+        return env, []
                     
 def interpret(s):
     (env, o) = execProgram({}, tokenizeAndParse(s)) # Ignore this error, it's in parse.py
