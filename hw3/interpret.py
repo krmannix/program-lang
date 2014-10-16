@@ -74,8 +74,6 @@ def evalExpression(env, e): # Useful helper function.
         return None, None
 
 def execProgram(env, s):
-    print(env)
-    print(s)
     if type(s) is dict:
         for label in s:
             children = s[label]
@@ -111,10 +109,39 @@ def execProgram(env, s):
                         return env, h
                     else:
                         return env, []
+            elif label == "Procedure":
+                var = children[0]["Variable"][0] # Get variable name
+                val = children[1] # Get the expression. This won't be evaluated until the variable is called
+                env[var] = val
+                if children[2]:
+                    env, g = execProgram(env, children[2])
+                    return env, g
+                else:
+                    return None, None
+            elif label == "Call":
+                val = children[0]["Variable"][0]
+                env, e = execProgram(env, env[val])
+                if children[1] is not None:
+                    env, f = execProgram(env, children[1])
+                    return env, e + f
+                else:
+                    return env, e
+            elif label == "While":
+                e = []
+                env, t = evalExpression(env, children[0])
+                while (t):
+                    if children[1] is not None:
+                        env, f = execProgram(env, children[1])
+                        e += f
+                if children[2] is not None:
+                    env, g = execProgram(env, children[2])
+                    return env, e + g
+                else:
+                    return env, e
 
     if s == "End":
         return env, []
-                    
+
 def interpret(s):
     (env, o) = execProgram({}, tokenizeAndParse(s)) # Ignore this error, it's in parse.py
     return o

@@ -64,13 +64,13 @@ def set(addr, val):
 def setZero(addrs):
     instrs = []
     for x in addrs:
-        instrs += ['set ' + x + ' 0']
+        instrs += ['set ' + str(x) + ' 0']
     return instrs
 
 
 def increment(addr):
     instrs = [] # Initialize instructions
-    instrs += set(1, 1)
+    instrs += set('1', '1')
     instrs += copy(addr, 2)
     instrs += ['add']
     instrs += copy(0, addr)
@@ -111,5 +111,19 @@ def procedure(name, body):
     instrs += ['jump' + 4]
     instrs += ['label' + labelEnd]
     return instrs
+
+def printVal(val):
+    instrs = ['set 5 ' + str(val)]
+    return instrs
+
+def printMem(val):
+    instrs = copy(str(val), 5)  # Move the value in mem[8] to the output buffer
+    print(instrs)
+    return instrs
+
+def assignVal(addr, val):
+    instrs = []
+    instrs += set(str(addr), str(val))
+    return addr, addr + 1, instrs
 
 # eof

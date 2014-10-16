@@ -35,33 +35,33 @@ def check(name, function, inputs_result_pairs):
 
 ############################################################
 # The tests.
-
-print("Problem #1, interpret()...")
-try: variable
-except: print("The interpret() function is not defined.")
-else: check('interpret', interpret, [\
-    # (["print 123;"], [123]),\
-    # (["print false; print true; print 4;"], [False, True, 4]),\
-    # (["x := 10; print x;"], [10]),\
-    # (["x := 10; print x + x;"], [20]),\
-    # (["x := 1; y := 2; z := 3; print x + y + z;"], [6]),\
-    # (["print true and false;"], [False]),\
-    # (["x := true or false; print x;"], [True]),\
-    # (["x := true or false; print x and not(x);"], [False]),\
-    # (["x := true; y := false; z := true; print (not(x) or y) and z;"], [False]),\
-    # (["if true {print 4;}"], [4]),\
-    # (["if true {print true;} print false;"], [True,False]),\
-    (["x := true; while not(x) {print false;} print true;"], [True]),\
-    # (["if true {print true;} print false;"], [True,False]),\
-    # (["procedure f { } print 4;"], [4]),\
-    # (["procedure example {print 4;} call example;"], [4]),\
-    # (["x := 123; procedure example {print x;} call example; call example;"], [123,123]),\
-    # (["procedure g {print 2;} procedure f {call g; print 1; call g;} call f;"], [2,1,2]),\
-    # (["procedure g {print 2;} if true and true { call g; }"], [2]),\
-    # (["procedure g {print 2;} procedure f {if true and true { call g; }} call g; call f;"], [2,2]),\
-    # (["procedure h {print 3;} procedure g {print 2; call h; call h;} procedure f {call g; print 1; call g;} call f;"], [2,3,3,1,2,3,3])\
-    ])
-
+#
+# print("Problem #1, interpret()...")
+# try: variable
+# except: print("The interpret() function is not defined.")
+# else: check('interpret', interpret, [\
+#     (["print 123;"], [123]),\
+#     (["print false; print true; print 4;"], [False, True, 4]),\
+#     (["x := 10; print x;"], [10]),\
+#     (["x := 10; print x + x;"], [20]),\
+#     (["x := 1; y := 2; z := 3; print x + y + z;"], [6]),\
+#     (["print true and false;"], [False]),\
+#     (["x := true or false; print x;"], [True]),\
+#     (["x := true or false; print x and not(x);"], [False]),\
+#     (["x := true; y := false; z := true; print (not(x) or y) and z;"], [False]),\
+#     (["if true {print 4;}"], [4]),\
+#     (["if true {print true;} print false;"], [True,False]),\
+#     (["x := true; while not(x) {print false;} print true;"], [True]),\
+#     (["if true {print true;} print false;"], [True,False]),\
+#     (["procedure f { } print 4;"], [4]),\
+#     (["procedure example {print 4;} call example;"], [4]),\
+#     (["x := 123; procedure example {print x;} call example; call example;"], [123,123]),\
+#     (["procedure g {print 2;} procedure f {call g; print 1; call g;} call f;"], [2,1,2]),\
+#     (["procedure g {print 2;} if true and true { call g; }"], [2]),\
+#     (["procedure g {print 2;} procedure f {if true and true { call g; }} call g; call f;"], [2,2]),\
+#     (["procedure h {print 3;} procedure g {print 2; call h; call h;} procedure f {call g; print 1; call g;} call f;"], [2,3,3,1,2,3,3])\
+#     ])
+#
 # print("Problem #3, part (d), compile()...")
 # try: variable
 # except: print("The compile() function is not defined.")
