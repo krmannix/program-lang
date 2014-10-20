@@ -17,7 +17,6 @@ def simulate(s):
         
         # Retrieve the current instruction.
         inst = instructions[control]
-        print(inst)
 
         # Handle the instruction.
         if inst[0] == 'label':
@@ -30,7 +29,6 @@ def simulate(s):
             continue
         if inst[0] == 'jump':
             control = mem[int(inst[1])]
-            return outputs
             continue
         if inst[0] == 'set':
             mem[int(inst[1])] = int(inst[2])
@@ -43,11 +41,9 @@ def simulate(s):
         if mem[5] > -1:
             outputs.append(mem[5])
             mem[5] = -1
-        print(mem)
         # Move control to the next instruction.
         control = control + 1
-
-    print("memory: "+str(mem))
+        
     return outputs
 
 # Examples of useful helper functions from lecture.    
@@ -89,31 +85,16 @@ def decrement(addr):
     instrs += setZero([0, 1, 2, 3, 4])
     return instrs
 
-
-def add(addr, val):
-    # Adds a value to the value at mem address
-    instrs = copy(addr, 2)
-    instrs += set(1, val)
-    instrs += ['add']
-    instrs += copy(0, addr)
-    return instrs
-
 def call(name):
     instrs = decrement(7)
-    instrs += copy(7, 4)
-    instrs += set(3, 6)
-    instrs += ['copy']
-    instrs += copy(7, 3)
-    instrs += set(4, 0)
-    instrs += ['copy']
-    instrs += increment(0)
+    instrs += copy(6, 1)
+    instrs += set(2, 9)
+    instrs += ['add']
     instrs += copy(7, 4)
     instrs += set(3, 0)
     instrs += ['copy']
-    instrs += add(6, 1000)
     instrs += ['goto ' + name]
-    instrs += decrement(7)
-    instrs += setZero([0, 1, 2, 3, 4])
+    instrs += increment(7)
     return instrs
 
 def procedure(name, body):
@@ -124,8 +105,10 @@ def procedure(name, body):
     instrs += ['label ' + labelStart]
     instrs += body
     # Get the address at the top of the stack currently
-    instrs += copy(7, 4)
-    instrs += ['jump 4']
+    instrs += copy(7, 3)
+    instrs += set(4, 0)
+    instrs += ['copy']
+    instrs += ['jump 0']
     instrs += ['label ' + labelEnd]
     return instrs
 
