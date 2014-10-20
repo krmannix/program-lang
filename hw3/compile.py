@@ -190,8 +190,10 @@ def compileProgram(env, s, heap):
 
 def compile(s):
     (env, o, heap) = compileProgram({}, tokenizeAndParse(s), 8) # Ignore this error, it's in parse.py
-    return o
+    initial = set(7, 0)
+    # Set call stack to -1 in mem[7]
+    return initial + o
 
 
-simulate(compile("procedure example {print 4;} call example;"))
-
+#simulate(compile("procedure example {print 4;} call example;"))
+#simulate(set(7, 0) + call("Hi"))
