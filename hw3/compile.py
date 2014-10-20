@@ -168,9 +168,22 @@ def compileProgram(env, s, heap):
                 else:
                     return env, ins, heap
             elif label == "Procedure":
-                print("Procedure")
-                print(children)
-
+                name = children[0]['Variable'][0]
+                env, body, heap = compileProgram(env, children[1], heap)
+                ins = procedure(name, body)
+                if children[2] is not None:
+                    env, ins_, heap = compileProgram(env, children[2], heap)
+                    return env, ins + ins_, heap
+                else:
+                    return env, ins, heap
+            elif label == "Call":
+                name = children[0]['Variable'][0]
+                ins = call(name)
+                if children[1] is not None:
+                    env, ins_, heap = compileProgram(env, children[1], heap)
+                    return env, ins + ins_, heap
+                else:
+                    return env, ins, heap
 
     if s == "End":
         return env, [], heap
@@ -178,4 +191,7 @@ def compileProgram(env, s, heap):
 def compile(s):
     (env, o, heap) = compileProgram({}, tokenizeAndParse(s), 8) # Ignore this error, it's in parse.py
     return o
+
+
+simulate(compile("procedure example {print 4;} call example;"))
 

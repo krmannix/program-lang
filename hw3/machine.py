@@ -80,7 +80,7 @@ def increment(addr):
 # Same as increment, just uses negative 1 instead
 def decrement(addr):
     instrs = [] # Initialize instructions
-    instrs += set(1, -1)
+    instrs += set('1', '-1')
     instrs += copy(addr, 2)
     instrs += ['add']
     instrs += copy(0, addr)
@@ -93,23 +93,23 @@ def call(name):
     instrs += copy(7, 4)
     instrs += ['set 3 6']
     instrs += increment(3) # Inside 3 should have the value that will be placed at the top of the call stack
-    instrs += 'copy' # Copy this updated address to top of the call stack
-    instrs += ['goto', name]
+    instrs += ['copy'] # Copy this updated address to top of the call stack
+    instrs += ['goto ' + name]
     instrs += increment(7)
     instrs += setZero([0, 1, 2, 3, 4])
     return instrs
 
 def procedure(name, body):
-    labelStart = name + '_start'
+    labelStart = name
     labelEnd = name + '_end'
     instrs = []
-    instrs += ['goto' + labelEnd]
-    instrs += ['label' + labelStart]
+    instrs += ['goto ' + labelEnd]
+    instrs += ['label ' + labelStart]
     instrs += body
     # Get the address at the top of the stack currently
     instrs += copy(7, 4)
-    instrs += ['jump' + 4]
-    instrs += ['label' + labelEnd]
+    instrs += ['jump 4']
+    instrs += ['label ' + labelEnd]
     return instrs
 
 def printVal(val):
