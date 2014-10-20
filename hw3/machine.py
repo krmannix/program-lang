@@ -57,7 +57,7 @@ def copy(frm, to):
    ]
 
 def set(addr, val):
-    return ['set ' + addr + ' ' + val]
+    return ['set ' + str(addr) + ' ' + str(val)]
 
 
 # Go through the list of address and set to zero, then return those functions
@@ -117,13 +117,26 @@ def printVal(val):
     return instrs
 
 def printMem(val):
+    #  Val is the mem location
     instrs = copy(str(val), 5)  # Move the value in mem[8] to the output buffer
-    print(instrs)
     return instrs
+
+def storeVal(val, addr):
+    instrs = set(addr, val)
+    return instrs, addr, addr + 1
+
 
 def assignVal(addr, val):
     instrs = []
     instrs += set(str(addr), str(val))
     return addr, addr + 1, instrs
+
+def addFromMem(addr1, addr2, heap):
+    instrs = []
+    instrs += copy(str(addr1), 1)
+    instrs += copy(str(addr2), 2)
+    instrs += ['add']
+    instrs += copy(0, heap)
+    return instrs, heap, heap + 1
 
 # eof

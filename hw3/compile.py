@@ -3,61 +3,87 @@ exec(open('interpret.py').read())
 exec(open("parse.py").read())
 import re, math
 
-def convertBool(val):
-    if val == True:
-        return 1
-    elif val == False:
-        return 0
 
-
-def compileExpression(env, e): # Useful helper function.
-    envTerm, t = compileTerm(env, e)
-    envForm, f = compileFormula(env, e)
-    if t is not None:
-        return env, t
-    elif f is not None:
-        return env, f
+def compileExpression(env, e, heap): # Useful helper function.
+    insTerm, addrTerm, heapTerm = compileTerm(env, e, heap)
+    insForm, addrForm, heapForm = compileFormula(env, e, heap)
+    if insTerm is not None:
+        return insTerm, addrTerm, heapTerm
+    elif insForm is not None:
+        return insForm, addrForm, heapForm
     else:
-        return None, None
+        return [], None, heap
 
+    # Variable needs to be changed in both accounts
+
+# compile term should return env, instrs, and heap
 def compileTerm(env, t, heap):
-    pass
+    if type(t) is dict:
+        for label in t:
+            children = t[label]
+            if label == "Number":
+                ins, addr, heap = storeVal(children[0], heap)
+                return ins, addr, heap
+            elif label == "Variable":
+                if env[children[0]] is not None:
+                    return [], env[children[0]], heap
+                else:
+                    ins, addr, heap = storeVal(children[0], heap)
+                    return ins, addr, heap
+            elif label == "Plus":
+                print("Plus")
+                print(children)
+                ins1, addr1, heap = compileTerm(env, children[0], heap)
+                ins2, addr2, heap = compileTerm(env, children[1], heap)
+                ins, addr3, heap = addFromMem(addr1, addr2, heap)
+                return ins1 + ins2 + ins, addr3, heap
+
+    return None, None, None
+
+
 
 def compileFormula(env, f, heap):
-    pass
+    if type(f) is dict:
+        for label in f:
+            children = f[label]
+    else:
+        #  This probably means it is True or False
+        if f == "True":
+            ins, addr, heap = storeVal(1, heap)
+            return ins, addr, heap
+        elif f == "False":
+            ins, addr, heap = storeVal(0, heap)
+            return ins, addr, heap
+    return None, None, None
 
+
+
+# Assign should remove 'Variable' from list. As in, it should get the variable and then
+# call evaluate expression on children[1]
+# Then call assignVal
+# If we reach a variable, we should return it's address space
 def compileProgram(env, s, heap):
-    print(s)
     if type(s) is dict:
         for label in s:
             children = s[label]
             if label == "Print":
-                env, e = compileExpression(env, children[0])
-                print(e)
-                if e is None:  # This means it is most likely a variable
-                    var = children[0]["Variable"][0]
-                    ins = printMem(env[var])
-                else:  # Not a variable, just a normal value
-                    if e == True or e == False:
-                        e = convertBool(e)
-                    ins = printVal(e)
-
+                ins, addr, heap = compileExpression(env, children[0], heap)
+                h = printMem(addr)
                 if children[1] is not None:
                     env, g, heap = compileProgram(env, children[1], heap)
-                    return env, ins + g, heap
+                    return env, ins + h + g, heap
                 else:
-                    return env, ins, heap
+                    return env, ins + h, heap
             elif label == "Assign":
                 var = children[0]["Variable"][0]
-                env, e = compileExpression(env, children[1])
-                if e == True or e == False:
-                    e = convertBool(e)
-                env[var], heap, ins = assignVal(heap, e)
+                ins, addr, heap = compileExpression(env, children[1], heap)
+                env[var] = addr
                 if children[2] is not None:
-                    env, g, heap = compileProgram(env, children[2], heap)
-                    return env, ins + g, heap
+                    env, ins_, heap = compileProgram(env, children[2], heap)
+                    return env, ins + ins_, heap
                 else:
                     return env, ins, heap
+
 
 
 
