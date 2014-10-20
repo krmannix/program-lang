@@ -2,6 +2,7 @@ exec(open('machine.py').read())
 exec(open('interpret.py').read())
 exec(open("parse.py").read())
 import re, math
+from random import randint
 
 
 def compileExpression(env, e, heap): # Useful helper function.
@@ -31,8 +32,6 @@ def compileTerm(env, t, heap):
                     ins, addr, heap = storeVal(children[0], heap)
                     return ins, addr, heap
             elif label == "Plus":
-                print("Plus")
-                print(children)
                 ins1, addr1, heap = compileTerm(env, children[0], heap)
                 ins2, addr2, heap = compileTerm(env, children[1], heap)
                 ins, addr3, heap = addFromMem(addr1, addr2, heap)
@@ -46,6 +45,56 @@ def compileFormula(env, f, heap):
     if type(f) is dict:
         for label in f:
             children = f[label]
+            if label == "And":
+                ins1, addr1, heap = compileFormula(env, children[0], heap)
+                ins2, addr2, heap = compileFormula(env, children[1], heap)
+                ins3, addr3, heap = addFromMem(addr1, addr2, heap)
+                ins3 += set(1, -1)
+                ins4, addr4, heap = addFromMem(1, addr3, heap)
+                rand_ = randint(0, 10000000)
+                ins4 += ['branch setOne'+str(rand_) + ' ' + str(addr4)]
+                ins4 += ['goto setZero'+str(rand_)]
+                ins4 += ['label setOne'+str(rand_)]
+                ins4 += set(addr4, 1)
+                ins4 += ['goto afterSet'+str(rand_)]
+                ins4 += ['label setZero'+str(rand_)]
+                ins4 += set(addr4, 0)
+                ins4 += ['label afterSet'+str(rand_)]
+                return ins1 + ins2 + ins3 + ins4, addr4, heap
+            elif label == "Or":
+                ins1, addr1, heap = compileFormula(env, children[0], heap)
+                ins2, addr2, heap = compileFormula(env, children[1], heap)
+                ins3, addr3, heap = addFromMem(addr1, addr2, heap)
+                rand_ = randint(0, 10000000)
+                ins3 += ['branch setOne'+str(rand_) + ' ' + str(addr3)]
+                ins3 += ['goto setZero'+str(rand_)]
+                ins3 += ['label setOne'+str(rand_)]
+                ins3 += set(addr3, 1)
+                ins3 += ['goto afterSet'+str(rand_)]
+                ins3 += ['label setZero'+str(rand_)]
+                ins3 += set(addr3, 0)
+                ins3 += ['label afterSet'+str(rand_)]
+                return ins1 + ins2 + ins3, addr3, heap
+            elif label == "Not":
+                rand_ = randint(0, 10000000)
+                ins_, addr, heap = compileFormula(env, children[0], heap)
+                ins = copy(addr, heap)
+                ins += ['branch setZero'+str(rand_) + ' ' + str(heap)]
+                ins += ['goto setOne'+str(rand_)]
+                ins += ['label setZero'+str(rand_)]
+                ins += set(heap, 0)
+                ins += ['goto afterSet'+str(rand_)]
+                ins += ['label setOne'+str(rand_)]
+                ins += set(heap, 1)
+                ins += ['label afterSet'+str(rand_)]
+                return ins_ + ins, heap, heap + 1
+            elif label == "Variable":
+                if env[children[0]] is not None:
+                    return [], env[children[0]], heap
+                else:
+                    ins, addr, heap = storeVal(children[0], heap)
+                    return ins, addr, heap
+
     else:
         #  This probably means it is True or False
         if f == "True":
@@ -70,8 +119,11 @@ def compileProgram(env, s, heap):
                 ins, addr, heap = compileExpression(env, children[0], heap)
                 h = printMem(addr)
                 if children[1] is not None:
-                    env, g, heap = compileProgram(env, children[1], heap)
-                    return env, ins + h + g, heap
+                    if children[1] != "End":
+                        env, g, heap = compileProgram(env, children[1], heap)
+                        return env, ins + h + g, heap
+                    else:
+                        return env, ins + h, heap
                 else:
                     return env, ins + h, heap
             elif label == "Assign":
@@ -83,9 +135,41 @@ def compileProgram(env, s, heap):
                     return env, ins + ins_, heap
                 else:
                     return env, ins, heap
-
-
-
+            elif label == "If":
+                ins, addr, heap = compileExpression(env, children[0], heap)
+                rand_ = randint(0, 10000000)
+                ins += ['branch startIf'+str(rand_) + ' ' + str(addr)]
+                ins += ['goto afterIf'+str(rand_)]
+                ins += ['label startIf'+str(rand_)]
+                env, ins_, heap = compileProgram(env, children[1], heap)
+                ins += ins_
+                ins += ['label afterIf'+str(rand_)]
+                # Children 2 will always be End
+                if len(children) > 2:
+                    env, ins_, heap = compileProgram(env, children[2], heap)
+                    return env, ins + ins_, heap
+                else:
+                    return env, ins, heap
+            elif label == "While":
+                rand_ = randint(0, 10000000)
+                ins = ['label whileStart'+str(rand_)]
+                ins_, addr, heap = compileExpression(env, children[0], heap)
+                ins += ins_
+                ins += ['branch continueLoop'+str(rand_) + ' ' + str(addr)]
+                ins += ['goto afterLoop'+str(rand_)]
+                ins += ['label continueLoop']
+                env, ins_, heap = compileProgram(env, children[1], heap)
+                ins += ins_
+                ins += ['goto whileStart'+str(rand_)]
+                ins += ['label afterLoop'+str(rand_)]
+                if children[2]:
+                    env, ins_, heap = compileProgram(env, children[2], heap)
+                    return env, ins + ins_, heap
+                else:
+                    return env, ins, heap
+            elif label == "Procedure":
+                print("Procedure")
+                print(children)
 
 
     if s == "End":
