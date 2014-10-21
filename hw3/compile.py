@@ -1,8 +1,11 @@
 exec(open('machine.py').read())
 exec(open('interpret.py').read())
 exec(open("parse.py").read())
-import re, math
 from random import randint
+
+# By Kevin Mannix (kmannix@bu.edu), Fall 2014
+#
+# Collaborated with Jasper Burns & Ben Pusey
 
 
 def compileExpression(env, e, heap): # Useful helper function.

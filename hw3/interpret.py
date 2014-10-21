@@ -3,8 +3,11 @@
 # CAS CS 320, Fall 2014
 # Assignment 3 (skeleton code)
 # interpret.py
+# By Kevin Mannix (kmannix@bu.edu), Fall 2014
 #
-import re, math
+# Collaborated with Jasper Burns & Ben Pusey
+
+import math
 
 exec(open("parse.py").read())
 

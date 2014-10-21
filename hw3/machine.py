@@ -3,6 +3,9 @@
 # CAS CS 320, Fall 2014
 # Assignment 3 (skeleton code)
 # machine.py
+# By Kevin Mannix (kmannix@bu.edu), Fall 2014
+#
+# Collaborated with Jasper Burns & Ben Pusey
 #
 
 def simulate(s):
@@ -43,7 +46,7 @@ def simulate(s):
             mem[5] = -1
         # Move control to the next instruction.
         control = control + 1
-        
+
     return outputs
 
 # Examples of useful helper functions from lecture.    
