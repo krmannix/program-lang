@@ -11,6 +11,24 @@
 
 import re
 
+def parse(seqs, tmp, top = True):
+    for (label, seq) in seqs:
+        tokens = tmp[0:]
+        (ss, es) = ([], [])
+        for x in seq:
+            if type(x) == type(""):
+                if tokens[0] == x:
+                    tokens = tokens[1:]
+                    ss = ss + [x]
+                else: break
+            else:
+                r = x(tokens, False)
+                if not r is None:
+                    (e, tokens) = r
+                    es = es + [e]
+        if len(ss) + len(es) == len(seq) and (not top or len(tokens) == 0):
+            return ({label:es} if len(es) > 0 else label, tokens)
+
 def number(tokens, top = True):
     if re.compile(r"(-(0|[1-9][0-9]*)|(0|[1-9][0-9]*))").match(tokens[0]):
         return ({"Number": [int(tokens[0])]}, tokens[1:])
@@ -19,16 +37,65 @@ def variable(tokens, top = True):
     if re.compile(r"[a-z][A-Za-z0-9]*").match(tokens[0]) and tokens[0] not in ['true', 'false']:
         return ({"Variable": [tokens[0]]}, tokens[1:])
 
-def expression():
-    pass # Complete for Problem #1.
+def expression(tmp, top = True):
+    tokens = tmp[0:]
+    r = leftExpression(tokens, False)
+    if not r is None:
+        (e1, tokens) = r
+        if len(tokens) > 0 and tokens[0] == '+':
+            r = expression(tokens[1:], False)
+            if not r is None:
+                (e2, tokens) = r
+                return ({'Plus':[e1,e2]}, tokens)
+        else:
+            return (e1, tokens)
 
-def program():
-    pass # Complete for Problem #1.
+def leftExpression(tmp, top = True):
+    r = parse([\
+        ('True', ['true']),\
+        ('False', ['false']),\
+        ], tmp, top)
+    if not r is None:
+        return r
+
+    tokens = tmp[0:]
+    if tokens[0] == '(':
+        r = expression(tokens[1:], False)
+        if not r is None:
+            (e, tokens) = r
+            if tokens[0] == ')':
+                return (e, tokens[1:])
+
+    tokens = tmp[0:]
+    r = variable(tokens, False)
+    if not r is None:
+        return r
+
+    tokens = tmp[0:]
+    r = number(tokens, False)
+    if not r is None:
+        return r
+
+def program(tmp, top = True):
+    if len(tmp) == 0:
+        return ('End', [])
+    r = parse([\
+        ('Print', ['print', expression, ';', program]),\
+        ('Assign',  [variable, ':=', '[', expression, ',', expression, ',', expression, ']', ';', program]),\
+        ('Assign',  ['assign', variable, ':=', '[', expression, ',', expression, ',', expression, ']', ';', program]),\
+        ('Array',  ['@', variable, '[', expression, ']']),\
+        ('End', [])
+        ], tmp, top)
+    if not r is None:
+        return r
 
 def tokenizeAndParse(s):
-    tokens = re.split(r"(\s+|assign|:=|\[|\]|,|print|\+|for|{|}|;|true|false|@|[0-9]|[A-Za-z0-9]*)", s)
-    for tok in tokens:
-        print(tok)
+    tokens = re.split(r"(\s+|assign|:=|\[|\]|,|print|\+|for|{|}|;|true|false|@|[0-9]|[A-Za-z0-9]+)", s)
+    tokens = [t for t in tokens if not t.isspace() and not t == ""]
+    (p, tokens) = program(tokens)
+    return p
 
-tokenizeAndParse("assign a := [1+2,4,6];")
+#tokenizeAndParse("assign a := [1+2,4,6];")
+x = tokenizeAndParse("assign a := [1+2,4,6];")
+print(x)
 #eof
