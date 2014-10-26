@@ -29,11 +29,13 @@ def evaluate(env, e):
                 else:
                     return env, None
             elif label == "Array":
-                if len(children) > 2:
-                    env, a1 = evaluate(env, children[0])
-                    env, a2 = evaluate(env, children[1])
-                    env, a3 = evaluate(env, children[2])
-                    env
+                if children[1] is not None:
+                    env, index = evaluate(env, children[1])
+                    var = children[0]['Variable'][0]
+                    el = env[var][index]
+                    return env, el
+                else:
+                    return env, None
     else:
         if e == "True":
                 return env, True
@@ -55,11 +57,16 @@ def execute(env, s):
                     return env, [t]
             elif label == "Assign":
                 var = children[0]["Variable"][0] # Get variable name
-                val = children[1] # Get the expression. This won't be evaluated until the variable is called
-                env[var] = val
-                if children[2]:
-                    env, g = execute(env, children[2])
-                    return env, g
+                if len(children) > 2:
+                    env, a1 = evaluate(env, children[0])
+                    env, a2 = evaluate(env, children[1])
+                    env, a3 = evaluate(env, children[2])
+                    env[var] = val
+                    if children[2]:
+                        env, g = execute(env, children[2])
+                        return env, g
+                    else:
+                        return None, None
                 else:
                     return None, None
             elif label == "If":

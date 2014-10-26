@@ -39,6 +39,7 @@ def variable(tokens, top = True):
 
 def expression(tmp, top = True):
     tokens = tmp[0:]
+
     r = leftExpression(tokens, False)
     if not r is None:
         (e1, tokens) = r
@@ -52,8 +53,8 @@ def expression(tmp, top = True):
             if not r is None:
                 (e2, tokens) = r
                 return ({'Array':[e1,e2]}, tokens)
-        elif len(tokens) > 0 and tokens[0] == ']':
-            return (e1, tokens[1:])
+        # elif len(tokens) > 0 and tokens[0] == ']':
+        #     return (e1, tokens[1:])
         else:
             return (e1, tokens)
 
@@ -78,7 +79,12 @@ def leftExpression(tmp, top = True):
         r = variable(tokens[1:], False)
         if not r is None:
             (e, tokens) = r
-            return (e, tokens)
+            if tokens[0] == '[':
+                r = expression(tokens[1:], False)
+                if not r is None:
+                    (e2, tokens) = r
+                    if tokens[0] == ']':
+                        return [e, e2], tokens[1:]
 
     tokens = tmp[0:]
     r = variable(tokens, False)
@@ -96,7 +102,7 @@ def program(tmp, top = True):
     r = parse([\
         ('Print', ['print', expression, ';', program]),\
         ('For',  ['for', variable, '{', program, '}', program]),\
-        ('Assign',  [variable, ':=', '[', expression, ',', expression, ',', expression, ']', ';', program]),\
+    #    ('Assign',  [variable, ':=', '[', expression, ',', expression, ',', expression, ']', ';', program]),\
         ('Assign',  ['assign', variable, ':=', '[', expression, ',', expression, ',', expression, ']', ';', program]),\
         ('End', [])
         ], tmp, top)
@@ -109,7 +115,7 @@ def tokenizeAndParse(s):
     (p, tokens) = program(tokens)
     return p
 
-#tokenizeAndParse("assign a := [1+2,4,6];")
-x = tokenizeAndParse("print @ g [4];")
+x = tokenizeAndParse("assign a := [1+2,4,6];")
+#x = tokenizeAndParse("for gui { print @ g [4+5]; }")
 print(x)
 #eof
