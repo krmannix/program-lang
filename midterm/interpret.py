@@ -91,6 +91,6 @@ def interpret(s):
     (env, o) = execute({}, tokenizeAndParse(s)) # Ignore this error, it's in parse.py
     return o
 
-x = interpret("assign a := [1+2,4,6]; for a { print true; }")
-print(x)
+# x = interpret("assign a := [1+2,4,6]; for a { print true; }")
+# print(x)
 #eof
