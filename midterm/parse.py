@@ -110,6 +110,6 @@ def tokenizeAndParse(s):
     return p
 
 #tokenizeAndParse("assign a := [1+2,4,6];")
-x = tokenizeAndParse("for gui { print 4+5; }")
+x = tokenizeAndParse("print @ g [4];")
 print(x)
 #eof
