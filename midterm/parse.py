@@ -84,7 +84,7 @@ def leftExpression(tmp, top = True):
                 if not r is None:
                     (e2, tokens) = r
                     if tokens[0] == ']':
-                        return [e, e2], tokens[1:]
+                        return {'Array':[e, e2]}, tokens[1:]
 
     tokens = tmp[0:]
     r = variable(tokens, False)
@@ -116,7 +116,7 @@ def tokenizeAndParse(s):
     return p
 
 #x = tokenizeAndParse("assign a := [1+2,4,6];")
-#x = tokenizeAndParse("for gui { print @ g [4+5]; }")
+x = tokenizeAndParse("for gui { print @ g [4+5]; }")
 #x = tokenizeAndParse("assign a := [1+2,4,6]; for a { print true; }")
-#print(x)
+print(x)
 #eof

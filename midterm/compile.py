@@ -50,12 +50,22 @@ def compileExpression(env, e, heap):
                 else:
                     ins, addr, heap = storeVal(children[0], heap)
                     return ins, addr, heap
-            ins1, addr1, heap = compileExpression(env, children[0], heap)
-            ins2, addr2, heap = compileExpression(env, children[1], heap)
-            ins, addr3, heap = addFromMem(addr1, addr2, heap)
-            return ins1 + ins2 + ins, addr3, heap
-
-            #if label == 'True':
+            elif label == "Plus":
+                ins1, addr1, heap = compileExpression(env, children[0], heap)
+                ins2, addr2, heap = compileExpression(env, children[1], heap)
+                ins3, addr3, heap = addFromMem(addr1, addr2, heap)
+                return ins1 + ins2 + ins3, addr3, heap
+            elif label == "Array":
+                var = children[0]['Variable'][0]
+                ins1, addr1, heap = compileExpression(children[1])
+                # addr1 has the offset
+                ins2, addr2, heap = storeVal(env[var], heap)
+                # addr2 has the start value
+                # now, add them and put them in addr3
+                ins3, addr3, heap = addFromMem(addr1, addr2, heap)
+                ins4 = copyFromRef(addr3, heap)
+                heap = heap + 1 # Update the heap, since copyFromRef doesn't
+                return ins1+ins2+ins3+ins4, heap, heap
     else:
         #  This probably means it is True or False
         if e == "True":
@@ -80,16 +90,31 @@ def compileProgram(env, p, heap = 8): # Set initial heap default address.
                 (instsE, addr, heap) = compileExpression(env, e, heap)
                 (env, instsP, heap) = compileProgram(env, p, heap)
                 return (env, instsE + copy(addr, 5) + instsP, heap)
+            elif label == 'Assign':
+                [v, e1, e2, e3, p] = children
+                (instsE1, addr1, heap) = compileExpression(env, e1, heap)
+                (instsE2, addr2, heap) = compileExpression(env, e2, heap)
+                (instsE3, addr3, heap) = compileExpression(env, e3, heap)
+                ins = []
+                env[v['Variable'][0]] = heap
+                ins += copyFromRef(addr1, heap)
+                heap = heap + 1
+                ins += copyFromRef(addr2, heap)
+                heap = heap + 1
+                ins += copyFromRef(addr3, heap)
+                heap = heap + 1
+                env, instsE4, heap = compileProgram(env, p, heap)
+                return (env, instsE1 + instsE2 + instsE3 + instsE4, heap)
 
-    pass # Complete 'Assign' case for Problem #3.
 
 def compile(s):
     s_ = tokenizeAndParse(s)
 
     # Add call to type checking algorithm for Problem #4.
     # Add calls to optimization algorithms for Problem #3.
-    p_ = unrollLoops(s_)
-    p = foldConstants(p_)
+    #p_ = unrollLoops(s_)
+    #p = foldConstants(p_)
+    p = s_
 
     (env, insts, heap) = compileProgram({}, p)
     return insts
@@ -99,5 +124,5 @@ def compileAndSimulate(s):
     return simulate(comp)
 
 #eof
-x = compileAndSimulate("print false; print true; print 4;")
+x = compileAndSimulate("assign a := [1+2,4,6];")
 print(x)
