@@ -115,7 +115,8 @@ def tokenizeAndParse(s):
     (p, tokens) = program(tokens)
     return p
 
-x = tokenizeAndParse("assign a := [1+2,4,6];")
+#x = tokenizeAndParse("assign a := [1+2,4,6];")
 #x = tokenizeAndParse("for gui { print @ g [4+5]; }")
-print(x)
+#x = tokenizeAndParse("assign a := [1+2,4,6]; for a { print true; }")
+#print(x)
 #eof

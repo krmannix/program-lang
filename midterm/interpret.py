@@ -37,10 +37,14 @@ def evaluate(env, e):
                 else:
                     return env, None
     else:
-        if e == "True":
+        if type(e) == type(0):
+            return env, e
+        elif e == "True":
                 return env, True
         elif e == "False":
                 return env, False
+        elif type(e) == type(""):
+            return env, e
         else:
             return env, None
 
@@ -57,39 +61,36 @@ def execute(env, s):
                     return env, [t]
             elif label == "Assign":
                 var = children[0]["Variable"][0] # Get variable name
-                if len(children) > 2:
-                    env, a1 = evaluate(env, children[0])
-                    env, a2 = evaluate(env, children[1])
-                    env, a3 = evaluate(env, children[2])
-                    env[var] = val
-                    if children[2]:
-                        env, g = execute(env, children[2])
+                if len(children) > 4:
+                    env, a1 = evaluate(env, children[1])
+                    env, a2 = evaluate(env, children[2])
+                    env, a3 = evaluate(env, children[3])
+                    env[var] = [a1, a2, a3]
+                    if children[4]:
+                        env, g = execute(env, children[4])
                         return env, g
                     else:
                         return None, None
                 else:
                     return None, None
-            elif label == "If":
-                env, t = evaluate(env, children[0])
-                if (t):
-                    env, g = execute(env, children[1])
-                    if children[2]:
-                        env, h = execute(env, children[2])
-                        return env, g + h
-                    else:
-                        return env, g
+            elif label == "For":
+                var = children[0]["Variable"][0] # Get variable name
+                body = children[1]
+                env, e1 = evaluate(env, env[var][0])
+                env, e2 = evaluate(env, env[var][1])
+                env, e3 = evaluate(env, env[var][2])
+                if children[2] is not None:
+                    env, e4 = execute(env, children[2])
+                    return env, [e1,e2,e3] + e4
                 else:
-                    if children[2]:
-                        env, h = execute(env, children[2])
-                        return env, h
-                    else:
-                        return env, []
+                    return env, [e1,e2,e3]
     if s == "End":
         return env, []
 
 def interpret(s):
-    (env, o) = execProgram({}, tokenizeAndParse(s)) # Ignore this error, it's in parse.py
+    (env, o) = execute({}, tokenizeAndParse(s)) # Ignore this error, it's in parse.py
     return o
 
-
+x = interpret("assign a := [1+2,4,6]; for a { print true; }")
+print(x)
 #eof
