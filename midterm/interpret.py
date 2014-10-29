@@ -39,9 +39,9 @@ def evaluate(env, e):
     else:
         if type(e) == type(0):
             return env, e
-        elif e == "True":
+        elif e == 'True':
                 return env, True
-        elif e == "False":
+        elif e == 'False':
                 return env, False
         elif type(e) == type(""):
             return env, e
@@ -76,21 +76,54 @@ def execute(env, s):
             elif label == "For":
                 var = children[0]["Variable"][0] # Get variable name
                 body = children[1]
-                env, e1 = evaluate(env, env[var][0])
-                env, e2 = evaluate(env, env[var][1])
-                env, e3 = evaluate(env, env[var][2])
+                env[var] = 0;
+                env, e1 = execute(env, body)
+                env[var] = 1;
+                env, e2 = execute(env, body)
+                env[var] = 2;
+                env, e3 = execute(env, body)
                 if children[2] is not None:
                     env, e4 = execute(env, children[2])
-                    return env, [e1,e2,e3] + e4
+                    return env, e1 + e2 + e3 + e4
                 else:
-                    return env, [e1,e2,e3]
+                    return env, e1 + e2 + e3
     if s == "End":
         return env, []
 
 def interpret(s):
-    (env, o) = execute({}, tokenizeAndParse(s)) # Ignore this error, it's in parse.py
+    parsed = tokenizeAndParse(s)
+    (env, o) = execute({}, parsed) # Ignore this error, it's in parse.py
     return o
 
 # x = interpret("assign a := [1+2,4,6]; for a { print true; }")
 # print(x)
 #eof
+
+testString = "\
+assign x := [false, 4, 2];\
+assign y := [@ x [2], @ x [1 + 1] + @ x [1], @ x [0]];\
+print @ y [0];\
+print @ y [1];\
+print @ y [2];\
+print @ x [0];\
+print @ x [1];\
+print @ x [2];\
+assign x := [2, 2, 2];\
+print @ x [0];\
+print @ x [1];\
+print @ x [2];\
+for x { print x; for j { print @ y [j]; } }\
+print @ y[0];\
+"
+
+# testString = "\
+# assign x := [false, 4, 2];\
+# for x { print x; }\
+#              ";
+
+
+
+x = interpret(testString)
+print(x)
+#print([False, 4, 2])
+print([2, 6, False, False, 4, 2, 2, 2, 2, 0, 2, 6, False, 1, 2, 6, False, 2, 2, 6, False, 2])
