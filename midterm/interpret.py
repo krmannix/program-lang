@@ -99,22 +99,22 @@ def interpret(s):
 # print(x)
 #eof
 
-testString = "\
-assign x := [false, 4, 2];\
-assign y := [@ x [2], @ x [1 + 1] + @ x [1], @ x [0]];\
-print @ y [0];\
-print @ y [1];\
-print @ y [2];\
-print @ x [0];\
-print @ x [1];\
-print @ x [2];\
-assign x := [2, 2, 2];\
-print @ x [0];\
-print @ x [1];\
-print @ x [2];\
-for x { print x; for j { print @ y [j]; } }\
-print @ y[0];\
-"
+# testString = "\
+# assign x := [false, 4, 2];\
+# assign y := [@ x [2], @ x [1 + 1] + @ x [1], @ x [0]];\
+# print @ y [0];\
+# print @ y [1];\
+# print @ y [2];\
+# print @ x [0];\
+# print @ x [1];\
+# print @ x [2];\
+# assign x := [2, 2, 2];\
+# print @ x [0];\
+# print @ x [1];\
+# print @ x [2];\
+# for x { print x; for j { print @ y [j]; } }\
+# print @ y[0];\
+# "
 
 # testString = "\
 # assign x := [false, 4, 2];\
@@ -123,7 +123,7 @@ print @ y[0];\
 
 
 
-x = interpret(testString)
-print(x)
+# x = interpret(testString)
+# print(x)
 #print([False, 4, 2])
-print([2, 6, False, False, 4, 2, 2, 2, 2, 0, 2, 6, False, 1, 2, 6, False, 2, 2, 6, False, 2])
+# print([2, 6, False, False, 4, 2, 2, 2, 2, 0, 2, 6, False, 1, 2, 6, False, 2, 2, 6, False, 2])

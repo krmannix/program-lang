@@ -42,8 +42,7 @@ def compileExpression(env, e, heap):
             children = e[label]
             if label == 'Number':
                 n = children[0]
-                heap = heap + 1
-                return (['set ' + str(heap) + ' ' + str(n)], heap, heap)
+                return (['set ' + str(heap) + ' ' + str(n)], heap, heap+1)
             elif label == "Variable":
                 if env[children[0]] is not None:
                     return [], env[children[0]], heap
@@ -57,15 +56,14 @@ def compileExpression(env, e, heap):
                 return ins1 + ins2 + ins3, addr3, heap
             elif label == "Array":
                 var = children[0]['Variable'][0]
-                ins1, addr1, heap = compileExpression(children[1])
+                ins1, addr1, heap = compileExpression(env, children[1], heap)
                 # addr1 has the offset
                 ins2, addr2, heap = storeVal(env[var], heap)
                 # addr2 has the start value
                 # now, add them and put them in addr3
                 ins3, addr3, heap = addFromMem(addr1, addr2, heap)
                 ins4 = copyFromRef(addr3, heap)
-                heap = heap + 1 # Update the heap, since copyFromRef doesn't
-                return ins1+ins2+ins3+ins4, heap, heap
+                return ins1+ins2+ins3+ins4, heap, heap + 1
     else:
         #  This probably means it is True or False
         if e == "True":
@@ -95,16 +93,13 @@ def compileProgram(env, p, heap = 8): # Set initial heap default address.
                 (instsE1, addr1, heap) = compileExpression(env, e1, heap)
                 (instsE2, addr2, heap) = compileExpression(env, e2, heap)
                 (instsE3, addr3, heap) = compileExpression(env, e3, heap)
-                ins = []
                 env[v['Variable'][0]] = heap
-                ins += copyFromRef(addr1, heap)
-                heap = heap + 1
-                ins += copyFromRef(addr2, heap)
-                heap = heap + 1
-                ins += copyFromRef(addr3, heap)
-                heap = heap + 1
-                env, instsE4, heap = compileProgram(env, p, heap)
-                return (env, instsE1 + instsE2 + instsE3 + instsE4, heap)
+                ins = []
+                ins += copy(addr1, heap)
+                ins += copy(addr2, heap+1)
+                ins += copy(addr3, heap+2)
+                env, instsE4, heap = compileProgram(env, p, heap+3)
+                return (env, instsE1 + instsE2 + instsE3 + ins + instsE4, heap)
 
 
 def compile(s):
@@ -112,9 +107,9 @@ def compile(s):
 
     # Add call to type checking algorithm for Problem #4.
     # Add calls to optimization algorithms for Problem #3.
-    #p_ = unrollLoops(s_)
-    #p = foldConstants(p_)
-    p = s_
+    p_ = foldConstants(s_)
+    p = unrollLoops(p_)
+
 
     (env, insts, heap) = compileProgram({}, p)
     return insts
@@ -124,5 +119,39 @@ def compileAndSimulate(s):
     return simulate(comp)
 
 #eof
-x = compileAndSimulate("assign a := [1+2,4,6];")
+# testString = "\
+# assign x := [false, 4, 2];\
+# assign y := [@ x [2], @ x [1 + 1] + @ x [1], @ x [0]];\
+# print @ y [0];\
+# print @ y [1];\
+# print @ y [2];\
+# print @ x [0];\
+# print @ x [1];\
+# print @ x [2];\
+# assign x := [2, 2, 2];\
+# print @ x [0];\
+# print @ x [1];\
+# print @ x [2];\
+# for x { print x; for j { print @ y [j]; } }\
+# print @ y[0];\
+# "
+#  What's failing in is assign y := [@ x [2], @ x [1 + 1] + @ x [1], @ x [0]];\
+testString = "\
+assign x := [false, 4, 2];\
+assign y := [@ x [2], @ x [1 + 1] + @ x [1], @ x [0]];\
+print @ y [0];\
+print @ y [1];\
+print @ y [2];\
+print @ x [0];\
+print @ x [1];\
+print @ x [2];\
+assign x := [2, 2, 2];\
+print @ x [0];\
+print @ x [1];\
+print @ x [2];\
+for x { print x; for j { print @ y [j]; } }\
+print @ y[0];\
+"
+x = compileAndSimulate(testString)
 print(x)
+print([2, 6, 0, 0, 4, 2, 2, 2, 2, 0, 2, 6, 0, 1, 2, 6, 0, 2, 2, 6, 0, 2])

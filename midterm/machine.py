@@ -50,7 +50,8 @@ def simulate(s):
         # Move control to the next instruction.
         control = control + 1
 
-    #print("memory: "+str(mem)) # Uncomment if necessary.
+    # print(inst)
+    # print("memory: "+str(mem)) # Uncomment if necessary.
     return outputs
 
 def copy(frm, to):
@@ -79,3 +80,4 @@ def copyFromRef(refFrm, to):
    ]
 
 # eof
+
