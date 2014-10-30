@@ -14,6 +14,7 @@ exec(open('parse.py').read())
 exec(open('interpret.py').read())
 exec(open('optimize.py').read())
 exec(open('machine.py').read())
+exec(open('analyze.py').read())
 
 Leaf = str
 Node = dict
@@ -106,6 +107,7 @@ def compile(s):
     s_ = tokenizeAndParse(s)
 
     # Add call to type checking algorithm for Problem #4.
+    g = typeProgram({}, s_)
     # Add calls to optimization algorithms for Problem #3.
     p_ = foldConstants(s_)
     p = unrollLoops(p_)
@@ -117,41 +119,3 @@ def compile(s):
 def compileAndSimulate(s):
     comp = compile(s)
     return simulate(comp)
-
-#eof
-# testString = "\
-# assign x := [false, 4, 2];\
-# assign y := [@ x [2], @ x [1 + 1] + @ x [1], @ x [0]];\
-# print @ y [0];\
-# print @ y [1];\
-# print @ y [2];\
-# print @ x [0];\
-# print @ x [1];\
-# print @ x [2];\
-# assign x := [2, 2, 2];\
-# print @ x [0];\
-# print @ x [1];\
-# print @ x [2];\
-# for x { print x; for j { print @ y [j]; } }\
-# print @ y[0];\
-# "
-#  What's failing in is assign y := [@ x [2], @ x [1 + 1] + @ x [1], @ x [0]];\
-testString = "\
-assign x := [false, 4, 2];\
-assign y := [@ x [2], @ x [1 + 1] + @ x [1], @ x [0]];\
-print @ y [0];\
-print @ y [1];\
-print @ y [2];\
-print @ x [0];\
-print @ x [1];\
-print @ x [2];\
-assign x := [2, 2, 2];\
-print @ x [0];\
-print @ x [1];\
-print @ x [2];\
-for x { print x; for j { print @ y [j]; } }\
-print @ y[0];\
-"
-x = compileAndSimulate(testString)
-print(x)
-print([2, 6, 0, 0, 4, 2, 2, 2, 2, 0, 2, 6, 0, 1, 2, 6, 0, 2, 2, 6, 0, 2])

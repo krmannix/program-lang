@@ -25,16 +25,22 @@ def typeExpression(env, e):
                 return 'Number'
 
             if label == 'Variable':
-                pass # Complete case for 'Variable' for Problem #4.
+                [x, e]
+                x = x['Variable'][0]
+                if typeExpression(env, e) == 'Number':
+                    return 'Number'
 
             elif label == 'Array':
                 [x, e] = children
-                x = var['Variable'][0]
+                x = x['Variable'][0]
                 if x in env and env[x] == 'Array' and typeExpression(env, e) == 'Number':
                     return 'Number'
 
             elif label == 'Plus':
-                pass # Complete case for 'Plus' for Problem #4.
+                [e0, e1] = children
+                if typeExpression(env, e0) == 'Number' and\
+                    typeExpression(env, e1) == 'Number':
+                    return 'Number'
 
 def typeProgram(env, s):
     if type(s) == Leaf:
@@ -44,7 +50,9 @@ def typeProgram(env, s):
         for label in s:
             if label == 'Print':
                 [e, p] = s[label]
-                pass # Complete case(s) for 'Print' for Problem #4.
+                e_ = typeExpression(env, e)
+                if typeProgram(env, p) == 'Void' and (e_ == 'Number' or e_ == 'Boolean'):
+                    return 'Void'
 
             if label == 'Assign':
                 [x, e0, e1, e2, p] = s[label]
@@ -59,6 +67,7 @@ def typeProgram(env, s):
             if label == 'For':
                 [x, p1, p2] = s[label]
                 x = x['Variable'][0]
-                pass # Complete case for 'For' for Problem #4.
+                if typeExpression(env, x) == 'Number' and typeProgram(env, p1) == 'Void' and typeProgram(env, p2) == 'Void':
+                    return 'Void'
 
 #eof
