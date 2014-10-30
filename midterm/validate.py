@@ -16,9 +16,12 @@ def expressions(n):
     if n <= 0:
         []
     elif n == 1:
-        return [] # Add base case(s) for Problem #5.
+        return ['True', 'False', {'Number':[2]}] # Add base case(s) for Problem #5.
     else:
-        pass # Add recursive case(s) for Problem #5.
+        es = expressions(n-1)
+        esN = []
+        esN += [{'Array':[{'Variable': ['a']}, {'Number':[2]}]} for e1 in es]
+        return es + esN
 
 def programs(n):
     if n <= 0:
@@ -30,8 +33,7 @@ def programs(n):
         es = expressions(n-1)
         psN = []
         psN += [{'Assign':[{'Variable':['a']}, e, e, e, p]} for p in ps for e in es]
-        
-        pass # Add more nodes to psN for Problem #5.
+        psN += [{'Print':[e, p]} for p in ps for e in es]
         
         return ps + psN
 
@@ -40,7 +42,7 @@ def programs(n):
 
 def defaultAssigns(p):
     return \
-      {'AssignArray':[\
+      {'Assign':[\
         {'Variable':['a']}, {'Number':[1]}, {'Number':[1]}, {'Number':[1]}, p\
       ]}
 
@@ -52,7 +54,7 @@ def defaultAssigns(p):
 
 for p in [defaultAssigns(p) for p in programs(4)]:
     try:
-        if simulate(compileProgram({}, p)[1]) != execute({}, p)[1]:
+        if simulate(compileProgram({}, unrollLoops(p))[1]) != execute({}, p)[1]:
             print('\nIncorrect behavior on: ' + str(p))
     except:
         print('\nError on: ' + str(p))

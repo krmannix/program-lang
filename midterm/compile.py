@@ -119,3 +119,4 @@ def compile(s):
 def compileAndSimulate(s):
     comp = compile(s)
     return simulate(comp)
+
