@@ -3,11 +3,7 @@
 # CAS CS 320, Fall 2014
 # Midterm (skeleton code)
 # compile.py
-#
-#  ****************************************************************
-#  *************** Modify this file for Problem #3. ***************
-#  ****************************************************************
-#
+# Modified by Kevin Mannix
 
 from random import randint
 exec(open('parse.py').read())

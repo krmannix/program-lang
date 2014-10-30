@@ -3,11 +3,7 @@
 # CAS CS 320, Fall 2014
 # Midterm (skeleton code)
 # validate.py
-#
-#  ****************************************************************
-#  *************** Modify this file for Problem #5. ***************
-#  ****************************************************************
-#
+# Modified by Kevin Mannix
 
 exec(open('interpret.py').read())
 exec(open('compile.py').read())

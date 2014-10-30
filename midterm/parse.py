@@ -3,11 +3,7 @@
 # CAS CS 320, Fall 2014
 # Midterm (skeleton code)
 # parse.py
-#
-#  ****************************************************************
-#  *************** Modify this file for Problem #1. ***************
-#  ****************************************************************
-#
+# Modified by Kevin Mannix
 
 import re
 

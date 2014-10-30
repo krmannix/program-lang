@@ -3,11 +3,7 @@
 # CAS CS 320, Fall 2014
 # Midterm (skeleton code)
 # analyze.py
-#
-#  ****************************************************************
-#  *************** Modify this file for Problem #4. ***************
-#  ****************************************************************
-#
+# Modified by Kevin Mannix
 
 exec(open("parse.py").read())
 
