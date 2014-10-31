@@ -104,9 +104,12 @@ def compile(s):
 
     # Add call to type checking algorithm for Problem #4.
     g = typeProgram({}, s_)
+    if g is None:
+        return None
     # Add calls to optimization algorithms for Problem #3.
     p_ = foldConstants(s_)
     p = unrollLoops(p_)
+
 
 
     (env, insts, heap) = compileProgram({}, p)
@@ -114,5 +117,6 @@ def compile(s):
 
 def compileAndSimulate(s):
     comp = compile(s)
+    if comp is None:
+        return None
     return simulate(comp)
-

@@ -21,10 +21,12 @@ def typeExpression(env, e):
                 return 'Number'
 
             if label == 'Variable':
-                [x, e]
-                x = x['Variable'][0]
-                if typeExpression(env, e) == 'Number':
-                    return 'Number'
+                x = children[0]
+                # x = x['Variable'][0]
+                if x in env:
+                    return env[x]
+                # if typeExpression(env, e) == 'Number':
+                #     return 'Number'
 
             elif label == 'Array':
                 [x, e] = children
@@ -56,14 +58,15 @@ def typeProgram(env, s):
                 if typeExpression(env, e0) == 'Number' and\
                    typeExpression(env, e1) == 'Number' and\
                    typeExpression(env, e2) == 'Number':
-                     env[x] = 'Array'
-                     if typeProgram(env, p) == 'Void':
+                    env[x] = 'Array'
+                    if typeProgram(env, p) == 'Void':
                            return 'Void'
 
             if label == 'For':
                 [x, p1, p2] = s[label]
                 x = x['Variable'][0]
-                if typeExpression(env, x) == 'Number' and typeProgram(env, p1) == 'Void' and typeProgram(env, p2) == 'Void':
+                env[x] = 'Number'
+                if typeProgram(env, p1) == 'Void' and typeProgram(env, p2) == 'Void':
                     return 'Void'
 
 #eof
