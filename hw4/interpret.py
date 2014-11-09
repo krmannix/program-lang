@@ -6,6 +6,9 @@
 #
 
 exec(open("parse.py").read())
+Node = dict
+LeafS = str
+LeafI = int
 
 def subst(s, a):
     if type(a) is dict:
@@ -35,11 +38,28 @@ def subst(s, a):
                 return a
                     #children[child]
 
-
-    pass # Complete for Problem #1, part (a).
-
 def unify(a, b):
-    pass # Complete for Problem #1, part (b).
+    v = type(a)
+    if (type(a) == LeafS or type(a) == LeafI) and (type(b) == LeafS or type(b) == LeafI):
+        return {}
+    elif list(a.keys())[0] == "Variable":
+        return {a["Variable"][0]: b}
+    elif list(b.keys())[0] == "Variable":
+        return {b["Variable"][0]: a}
+    else:
+        ac = a[list(a.keys())[0]]
+        bc = b[list(b.keys())[0]]
+        s = {}
+        for idx, child in enumerate(ac):
+            a_ = ac[idx]
+            b_ = bc[idx]
+            s_ = unify(a_, b_)
+            for label in s_:
+                if label in s:
+                    return {}
+            s = dict(s.items() + s_.items())
+        return s
+
 
 def build(m, d):
     pass # Complete for Problem #2, part (a).
@@ -66,3 +86,6 @@ def interact(s):
             print("Unknown input.")
 
 #eof
+#
+# k = unify(parser(grammar, 'expression')("5"), parser(grammar, 'expression')("5"))
+# print(k)
