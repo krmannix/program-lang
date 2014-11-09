@@ -123,6 +123,7 @@ def program(tmp, top = True):
         ('Call',  ['call', variable, ';', program]),\
         ('End', [])
         ], tmp, top)
+    print(r)
     if not r is None:
         return r
 
