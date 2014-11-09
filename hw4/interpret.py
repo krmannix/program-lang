@@ -57,15 +57,64 @@ def unify(a, b):
             for label in s_:
                 if label in s:
                     return {}
-            s = dict(s.items() + s_.items())
+            # if type(s_)
+            if len(s_) > 0:
+                s = dict(s.items() + s_.items())
         return s
+#
+# def pattern(p):
+#     if type(p) is Node:
+#         for label in p:
+#             children = p[label]
+#             if label == "ConBase":
+#                 return p
+#             elif label == "Number":
+#                 return p
+#             elif
 
 
 def build(m, d):
-    pass # Complete for Problem #2, part (a).
+    if type(d) is Node:
+        for label in d:
+            children = d[label]
+            if label == "Function":
+                var = children[0]["Variable"][0]
+                p = children[1]
+                e = children[2]
+                if var in m:
+                    m[var] += [(p, e)]
+                else:
+                    m[var] = [(p, e)]
+                if len(children) > 3:
+                    m = build(m, children[3])
+                    return m
+                else:
+                    return m
+            else:
+                return m
+    else:
+        return m
   
 def evaluate(m, env, e):
-    pass # Complete for Problem #2, part (b).
+    if type(e) is Node:
+        for label in e:
+            children = e[label]
+            if label == "Apply":
+                var = children[0]['Variable'][0]
+                if var in m:
+                    v_ = m[var]
+                    for idx, child in enumerate(v_):
+                        p = v_[idx][0]
+                        # type check
+                        c_key = list(children[1])[0]
+                        p_key = list(p)[0]
+                        if list(children[1])[0] == list(p)[0] and children[1][c_key] == p[p_key]:
+                            env = unify(p, children[1])
+                            return evaluate(m, env, v_[idx][1])
+            if label == "ConBase":
+
+                return e
+
 
 def interact(s):
     # Build the module definition.
@@ -85,7 +134,9 @@ def interact(s):
         else:
             print("Unknown input.")
 
-#eof
-#
-# k = unify(parser(grammar, 'expression')("5"), parser(grammar, 'expression')("5"))
+# #eof
+# j = parser(grammar, 'declaration')("f(x) = Test;")
+# print(j)
+# k = build({}, j)
 # print(k)
+evaluate(build({}, parser(grammar, 'declaration')("f(Node t1 t2) = g(g(True)); f(Leaf) = g(False); g(True) = False; g(False) = True;")), {}, parser(grammar, 'expression')("f(Leaf)"))
