@@ -36,7 +36,8 @@ def subst(s, a):
                     children[idx] = g
                 a[label] = children
                 return a
-                    #children[child]
+    else:
+        return a
 
 def unify(a, b):
     v = type(a)
@@ -59,7 +60,10 @@ def unify(a, b):
                     return {}
             # if type(s_)
             if len(s_) > 0:
-                s = dict(s.items() + s_.items())
+                if len(s) == 0:
+                    s = s_
+                else:
+                    s = dict(list(s.items()) + list(s_.items()))
         return s
 #
 # def pattern(p):
@@ -102,17 +106,30 @@ def evaluate(m, env, e):
             if label == "Apply":
                 var = children[0]['Variable'][0]
                 if var in m:
-                    v_ = m[var]
+                    v_ = m[var] # v_ is a (program, expression) tuple
                     for idx, child in enumerate(v_):
                         p = v_[idx][0]
-                        # type check
                         c_key = list(children[1])[0]
                         p_key = list(p)[0]
-                        if list(children[1])[0] == list(p)[0] and children[1][c_key] == p[p_key]:
-                            env = unify(p, children[1])
-                            return evaluate(m, env, v_[idx][1])
-            if label == "ConBase":
+                        if c_key == p_key:
+                            if len(children[1][c_key]) > 1 and len(children[1][c_key]) == len(p[p_key]):
+                                env = unify(p, children[1])
+                                a = subst(env, p)
+                                return evaluate(m, env, a)
+                            else:
+                                if children[1][c_key] == p[p_key]:
 
+                                    env = unify(p, children[1])
+                                    return evaluate(m, env, v_[idx][1])
+            elif label == "ConInd":
+                e1 = evaluate(m, env, children[1])
+                e2 = evaluate(m, env, children[2])
+                #print(t)
+            elif label == "ConBase":
+                return e
+            elif label == "Number":
+                return e
+            else:
                 return e
 
 
@@ -139,4 +156,4 @@ def interact(s):
 # print(j)
 # k = build({}, j)
 # print(k)
-evaluate(build({}, parser(grammar, 'declaration')("f(Node t1 t2) = g(g(True)); f(Leaf) = g(False); g(True) = False; g(False) = True;")), {}, parser(grammar, 'expression')("f(Leaf)"))
+evaluate(build({}, parser(grammar, 'declaration')("f(x) = Test;")), {}, parser(grammar, 'expression')("f(Test)"))
