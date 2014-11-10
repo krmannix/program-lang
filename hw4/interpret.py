@@ -52,18 +52,21 @@ def unify(a, b):
         bc = b[list(b.keys())[0]]
         s = {}
         for idx, child in enumerate(ac):
-            a_ = ac[idx]
-            b_ = bc[idx]
-            s_ = unify(a_, b_)
-            for label in s_:
-                if label in s:
-                    return {}
-            # if type(s_)
-            if len(s_) > 0:
-                if len(s) == 0:
-                    s = s_
-                else:
-                    s = dict(list(s.items()) + list(s_.items()))
+            if idx < len(ac) and idx < len(bc):
+                a_ = ac[idx]
+                b_ = bc[idx]
+                s_ = unify(a_, b_)
+                for label in s_:
+                    if label in s:
+                        return {}
+                # if type(s_)
+                if len(s_) > 0:
+                    if len(s) == 0:
+                        s = s_
+                    else:
+                        s = dict(list(s.items()) + list(s_.items()))
+            else:
+                return None
         return s
 #
 # def pattern(p):
@@ -105,22 +108,16 @@ def evaluate(m, env, e):
             children = e[label]
             if label == "Apply":
                 var = children[0]['Variable'][0]
-                if var in m:
-                    v_ = m[var] # v_ is a (program, expression) tuple
-                    for idx, child in enumerate(v_):
-                        p = v_[idx][0]
-                        c_key = list(children[1])[0]
-                        p_key = list(p)[0]
-                        if c_key == p_key:
-                            if len(children[1][c_key]) > 1 and len(children[1][c_key]) == len(p[p_key]):
-                                env = unify(p, children[1])
-                                a = subst(env, p)
-                                return evaluate(m, env, a)
-                            else:
-                                if children[1][c_key] == p[p_key]:
-
-                                    env = unify(p, children[1])
-                                    return evaluate(m, env, v_[idx][1])
+                if var in m: # v_ is a (program, expression) tuple
+                    for idx, child in enumerate(m[var]):
+                        s = unify(child[0], children[1])
+                        if s is not None:
+                            env = dict(list(s.items()) + list(env.items()))
+                            g = subst(env, child[1])
+                            if g == child[0]: # Make sure the trees are now equal
+                                r = evaluate(m, s, g)
+                                return r
+                return None
             elif label == "ConInd":
                 e1 = evaluate(m, env, children[1])
                 e2 = evaluate(m, env, children[2])
@@ -156,4 +153,4 @@ def interact(s):
 # print(j)
 # k = build({}, j)
 # print(k)
-evaluate(build({}, parser(grammar, 'declaration')("f(x) = Test;")), {}, parser(grammar, 'expression')("f(Test)"))
+evaluate(build({}, parser(grammar, 'declaration')("f(Node t1 t2) = g(g(True)); f(Leaf) = g(False); g(True) = False; g(False) = True;")), {}, parser(grammar, 'expression')("f(Leaf)"))
