@@ -30,4 +30,11 @@ height(Leaf) = 0;
 height(Twig) = 1;
 height(Branch b1 b2 b3) = 1 + maximum [height(b1), height(b2), height(b3)];
 
+perfect :: Tree -> Bool
+perfect(Leaf) = True;
+perfect(Twig) = False;
+perfect(Branch b1 b2 b3) = (perfect(b1) && perfect(b2) && perfect(b3)) && (height(b1) == height(b2)) && (height(b2) == height(b3));
+
+
+
 --eof
