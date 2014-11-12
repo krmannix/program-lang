@@ -113,10 +113,15 @@ def evaluate(m, env, e):
                         s = unify(child[0], children[1])
                         if s is not None:
                             env = dict(list(s.items()) + list(env.items()))
+                            c_0 = subst(env, child[0])
                             g = subst(env, child[1])
-                            if g == child[0]: # Make sure the trees are now equal
+                            g_key = list(g.keys())[0]
+                            if g_key == "Apply":
                                 r = evaluate(m, s, g)
                                 return r
+                            elif children[1] == c_0:
+                                return g
+
                 return None
             elif label == "ConInd":
                 e1 = evaluate(m, env, children[1])
@@ -153,4 +158,4 @@ def interact(s):
 # print(j)
 # k = build({}, j)
 # print(k)
-evaluate(build({}, parser(grammar, 'declaration')("f(Node t1 t2) = g(g(True)); f(Leaf) = g(False); g(True) = False; g(False) = True;")), {}, parser(grammar, 'expression')("f(Leaf)"))
+evaluate(build({}, parser(grammar, 'declaration')("f(x) = Test;")), {}, parser(grammar, 'expression')("f(Test)"))
