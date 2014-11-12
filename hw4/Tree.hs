@@ -25,4 +25,9 @@ branches(Leaf) = 0;
 branches(Twig) = 0;
 branches(Branch b1 b2 b3) = 1 + branches(b1) + branches(b2) + branches(b3);
 
+height :: Tree -> Integer
+height(Leaf) = 0;
+height(Twig) = 1;
+height(Branch b1 b2 b3) = 1 + maximum [height(b1), height(b2), height(b3)];
+
 --eof
