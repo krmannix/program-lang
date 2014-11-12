@@ -35,6 +35,27 @@ perfect(Leaf) = True;
 perfect(Twig) = False;
 perfect(Branch b1 b2 b3) = (perfect(b1) && perfect(b2) && perfect(b3)) && (height(b1) == height(b2)) && (height(b2) == height(b3));
 
+degenerate :: Tree -> Bool
+degenerate(Leaf) = True;
+degenerate(Twig) = True;
+degenerate(Branch Leaf (Branch _ _ _) (Branch _ _ _)) = False;
+degenerate(Branch (Branch _ _ _) Leaf (Branch _ _ _)) = False;
+degenerate(Branch (Branch _ _ _) (Branch _ _ _) Leaf) = False;
+degenerate(Branch Twig (Branch _ _ _) (Branch _ _ _)) = False;
+degenerate(Branch (Branch _ _ _) Twig (Branch _ _ _)) = False;
+degenerate(Branch (Branch _ _ _) (Branch _ _ _) Twig) = False;
+degenerate(Branch _ _ _) = True;
+
+infinite :: Tree
+infinite = (Branch infinite infinite infinite);
+
+
+
+
+
+
+
+
 
 
 --eof
