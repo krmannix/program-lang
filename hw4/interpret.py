@@ -68,16 +68,6 @@ def unify(a, b):
             else:
                 return None
         return s
-#
-# def pattern(p):
-#     if type(p) is Node:
-#         for label in p:
-#             children = p[label]
-#             if label == "ConBase":
-#                 return p
-#             elif label == "Number":
-#                 return p
-#             elif
 
 
 def build(m, d):
@@ -116,7 +106,7 @@ def evaluate(m, env, e):
                             c_0 = subst(env, child[0])
                             g = subst(env, child[1])
                             g_key = list(g.keys())[0]
-                            if g_key == "Apply":
+                            if g_key == "Apply" or g_key == "ConInd":
                                 r = evaluate(m, s, g)
                                 return r
                             elif children[1] == c_0:
@@ -126,7 +116,7 @@ def evaluate(m, env, e):
             elif label == "ConInd":
                 e1 = evaluate(m, env, children[1])
                 e2 = evaluate(m, env, children[2])
-                #print(t)
+                return {label : [children[0], e1, e2]}
             elif label == "ConBase":
                 return e
             elif label == "Number":
@@ -158,4 +148,4 @@ def interact(s):
 # print(j)
 # k = build({}, j)
 # print(k)
-evaluate(build({}, parser(grammar, 'declaration')("f(x) = Test;")), {}, parser(grammar, 'expression')("f(Test)"))
+evaluate(build({}, parser(grammar, 'declaration')("new(Node t1 t2) = NewNode new(t1) new(t2); new(Leaf) = NewLeaf;")), {}, parser(grammar, 'expression')("new(Node Leaf Leaf)"))
