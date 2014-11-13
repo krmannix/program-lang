@@ -120,7 +120,12 @@ def evaluate(m, env, e):
             elif label == "ConBase":
                 return e
             elif label == "Number":
-                return e
+                return children[0]
+            elif label == "Plus":
+                g = 0
+                for child in children:
+                    g += evaluate(m, env, child)
+                return g
             else:
                 return e
 
