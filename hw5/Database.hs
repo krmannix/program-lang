@@ -43,19 +43,14 @@ userPermission u t c = length [() | (u_, t_) <- [(u_, t_) | Allow (u_, t_) <- c]
 userExists :: User -> [Command] -> Bool
 userExists u c = length [() | u_ <- [u_ | Add (u_) <- c], u_ == u] > 0
 
-selectFromTable :: Table -> Column -> [Command] -> [[(Column, Integer)]]
-selectFromTable t l c = [f | Insert (t_, f) <- c, t_ == t ]
+selectFromTable :: Table -> Column -> [Command] -> [Integer]
+selectFromTable t l c = [v | (l_, v) <- concat[f | Insert (t_, f) <- c, t_ == t ], l_ == l]
 
 -- Complete for Assignment 5, Problem 1, part (a).
 select :: [Command] -> User -> Table -> Column -> Maybe [Integer]
-select _ _ _ _ =
-  Nothing
---select c u t l =  if userExists(u, c) && userPermission(u, t, c) && tableExists(t, c)
-  --                  then selectFromTable(t, c)
-    --              else Nothing
-
-
-
+select c u t l = if tableExists t c && userExists u c && userPermission u t c
+                    then Just (selectFromTable t l c)
+                    else Nothing
 
 -- Type synonym for aggregation operators.
 type Operator = Integer -> Integer -> Integer
