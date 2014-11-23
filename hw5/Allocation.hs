@@ -12,6 +12,14 @@ type Bin = Integer
 
 data Alloc = Alloc Bin Bin deriving (Eq, Show)
 
+instance Ord Alloc where
+	(Alloc l r) < (Alloc l_ r_) = abs(l-r) < abs(l_-r_)
+	(Alloc l r) <= (Alloc l_ r_) = abs(l-r) <= abs(l_-r_)
+
+data Alpha = Alpha
+instance Eq Alpha where
+    Alpha == Alpha = True
+
 data Graph =
     Branch Alloc Graph Graph 
   | Finish Alloc
@@ -31,6 +39,10 @@ graph :: Alloc -> [Item] -> Graph
 graph a i 
 	| (length i) == 0 = Finish a
 	| otherwise = Branch a (leftGraphHelper a i) (rightGraphHelper a i)
+
+alloc :: Graph -> Alloc
+alloc (Branch a _ _) = a
+alloc (Finish a) = a
 
 type Strategy = Graph -> Graph
 
