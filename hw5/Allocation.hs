@@ -6,6 +6,8 @@
 --
 
 module Allocation where
+import Data.Function
+import Data.List
 
 type Item = Integer
 type Bin = Integer
@@ -48,6 +50,20 @@ depthHelper c n (Finish a) i
 	| c == n = i ++ [a]
 	| otherwise = i
 
+patientHelper :: Integer -> Integer -> Strategy
+patientHelper c n (Branch a l r)
+	| c == n-1 = if l < r then l else r
+	| otherwise = if patientHelper (c+1) n l < patientHelper (c+1) n r then patientHelper (c+1) n l else patientHelper (c+1) n r
+
+metaRepeatHelper :: Integer -> Integer -> Strategy -> Strategy
+metaRepeatHelper c n s1 g 
+	| c == n = s1 g
+	| otherwise = s1 (metaRepeatHelper (c+1) n s1 g)
+
+--fitHelper :: Strategy -> Integer
+--fitHelper  (Branch (Alloc l r) _ _) _ = abs(l-r)
+--fitHelper  (Finish (Alloc l r)) _ = abs(l-r)
+
 graph :: Alloc -> [Item] -> Graph
 graph a i 
 	| (length i) == 0 = Finish a
@@ -65,6 +81,39 @@ depth :: Integer -> Graph -> [Alloc]
 depth n g = depthHelper 0 n g []
 
 type Strategy = Graph -> Graph
+
+greedy :: Strategy
+greedy (Branch a l r)
+	| l < r = l
+	| otherwise = r 
+greedy (Finish a) = Finish a
+
+patient :: Integer -> Strategy
+patient n (Branch a l r) 
+	| n == 0 = Branch a l r
+	| otherwise = patientHelper 0 n (Branch a l r)
+patient n (Finish a) = Finish a
+
+optimal :: Strategy -- If I knew the depth of the tree, I could call patient depthInt g
+optimal (Branch a l r) = optimal (greedy (Branch a l r))
+optimal (Finish a) = Finish a
+
+metaCompose :: Strategy -> Strategy -> Strategy
+metaCompose s1 s2 g = s2 (s1 g)
+
+metaRepeat :: Integer -> Strategy -> Strategy 
+metaRepeat n s1 g 
+	| n == 0 = g
+	| n > 0 = metaRepeatHelper 1 n s1 g
+
+metaGreedy :: Strategy -> Strategy -> Strategy
+metaGreedy s1 s2 g = greedy (Branch (Alloc 0 0) (s1 g) (s2 g))
+
+impatient :: Integer -> Strategy
+impatient n g = (metaRepeat n greedy) g
+
+--fit :: Graph -> [Strategy] -> Strategy
+--fit g i = minimumBy (compare `on` (fitHelper g)) i
 
 
 
