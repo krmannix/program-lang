@@ -32,14 +32,28 @@ example = [
 lookup' :: Column -> [(Column, Integer)] -> Integer
 lookup' c' ((c,i):cvs) = if c == c' then i else lookup' c' cvs
 
+-- ALL HELPER METHODS
 -- See if table exists
 tableExists :: Table -> [Command] -> Bool
-tableExists t c = length [() | Create (t) <- c] > 0
+tableExists t c = length [() | n <- [n | Create(n) <- c], n == t] > 0--Create (t) == Create (Table "Revenue") --length [(t) | Create (t) <- c]
+
+userPermission :: User -> Table -> [Command] -> Bool
+userPermission u t c = length [() | (u_, t_) <- [(u_, t_) | Allow (u_, t_) <- c], u_ == u && t_ == t] > 0
+
+userExists :: User -> [Command] -> Bool
+userExists u c = length [() | u_ <- [u_ | Add (u_) <- c], u_ == u] > 0
+
+selectFromTable :: Table -> Column -> [Command] -> [[(Column, Integer)]]
+selectFromTable t l c = [f | Insert (t_, f) <- c, t_ == t ]
 
 -- Complete for Assignment 5, Problem 1, part (a).
 select :: [Command] -> User -> Table -> Column -> Maybe [Integer]
 select _ _ _ _ =
   Nothing
+--select c u t l =  if userExists(u, c) && userPermission(u, t, c) && tableExists(t, c)
+  --                  then selectFromTable(t, c)
+    --              else Nothing
+
 
 
 
