@@ -6,6 +6,7 @@
 --
 
 module Database where
+import Data.List (nub, reverse)
 
 type Column = String
 data User = User String deriving (Eq, Show)
@@ -16,6 +17,8 @@ data Command =
   | Allow (User, Table)
   | Insert (Table, [(Column, Integer)])
   deriving (Eq, Show)
+
+
 
 example = [
     Add (User "Alice"),
@@ -46,6 +49,40 @@ userExists u c = length [() | u_ <- [u_ | Add (u_) <- c], u_ == u] > 0
 selectFromTable :: Table -> Column -> [Command] -> [Integer]
 selectFromTable t l c = [v | (l_, v) <- concat[f | Insert (t_, f) <- c, t_ == t ], l_ == l]
 
+checkUserCreated :: [Command] -> User -> Bool
+checkUserCreated c u = length [() | Add (u_) <- c, u_ == u] > 0
+
+checkTableCreated :: [Command] -> Table -> Bool
+checkTableCreated c t = length [() | Create (t_) <- c, t_ == t] > 0
+
+isCreated :: [Command] -> Command -> Bool
+isCreated c (Allow (u, t)) = (checkUserCreated c u) && (checkTableCreated c t)
+isCreated c (Insert (t, _)) = (checkTableCreated c t)
+isCreated c _ = True
+
+validateHelper :: [Command] -> Bool
+validateHelper c = if (length c) > 1 -- then if isCreated (concat((splitAt 1 c) !! 1)) (((splitAt 1 c) !! 0) !! 0) then True else False else False
+                    then 
+                      if checkIsCreated (splitAt 1 c)
+                        then validateHelper (snd (splitAt 1 c))
+                      else 
+                        False
+                  else
+                    if (length c) == 0
+                      then 
+                        False
+                    else -- Means length == 1
+                      isCreated [] (head c)
+
+checkIsCreated :: ([Command], [Command]) -> Bool
+checkIsCreated (l, c) = isCreated c (head l)
+
+
+
+
+
+-- REAL FUNCTIONS
+
 -- Complete for Assignment 5, Problem 1, part (a).
 select :: [Command] -> User -> Table -> Column -> Maybe [Integer]
 select c u t l = if tableExists t c && userExists u c && userPermission u t c
@@ -62,11 +99,9 @@ aggregate c u t l o = if tableExists t c && userExists u c && userPermission u t
                         else Nothing
 
 
-
 -- Complete for Assignment 5, Problem 1, part (c).
 validate :: [Command] -> Bool
-validate _ =
-  False
+validate c = validateHelper (reverse c)
 
 
 
