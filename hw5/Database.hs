@@ -57,8 +57,9 @@ type Operator = Integer -> Integer -> Integer
 
 -- Complete for Assignment 5, Problem 1, part (b).
 aggregate :: [Command] -> User -> Table -> Column -> Operator -> Maybe Integer
-aggregate _ _ _ _ _ =
-  Nothing
+aggregate c u t l o = if tableExists t c && userExists u c && userPermission u t c
+                        then Just (foldr o 0 (selectFromTable t l c))
+                        else Nothing
 
 
 
