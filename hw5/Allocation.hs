@@ -27,14 +27,20 @@ instance Ord Graph where
 	g < g' = alloc(g) < alloc(g')
 	g <= g' = alloc(g) <= alloc(g')
 
+isNonEmpty :: [Item] -> Bool
+isNonEmpty i = null i
+
+longerThan :: Int -> [Item] -> Bool
+longerThan n xs = isNonEmpty $ drop n xs
+
 leftGraphHelper :: Alloc -> [Item] -> Graph
 leftGraphHelper (Alloc l r) i 
-	| (length i) == 1 = Finish (Alloc (head i + l) r)
+	| longerThan 1 i = Finish (Alloc (head i + l) r)
 	| otherwise = Branch (Alloc (head i + l) r) (leftGraphHelper (Alloc (head i + l) r) (snd (splitAt 1 i))) (rightGraphHelper (Alloc (head i + l) r) (snd (splitAt 1 i))) 
 
 rightGraphHelper :: Alloc -> [Item] -> Graph
 rightGraphHelper (Alloc l r) i
-	| (length i) == 1 = Finish (Alloc l (head i + r))
+	| longerThan 1 i = Finish (Alloc l (head i + r))
 	| otherwise = Branch (Alloc l (head i + r)) (leftGraphHelper (Alloc l (head i + r)) (snd (splitAt 1 i))) (rightGraphHelper (Alloc l (head i + r)) (snd (splitAt 1 i))) 
 
 finalHelper :: Graph -> [Alloc] -> [Alloc]
@@ -66,7 +72,7 @@ metaRepeatHelper c n s1 g
 
 graph :: Alloc -> [Item] -> Graph
 graph a i 
-	| (length i) == 0 = Finish a
+	| null i = Finish a
 	| otherwise = Branch a (leftGraphHelper a i) (rightGraphHelper a i)
 
 alloc :: Graph -> Alloc
@@ -94,8 +100,8 @@ patient n (Branch a l r)
 	| otherwise = patientHelper 0 n (Branch a l r)
 patient n (Finish a) = Finish a
 
-optimal :: Strategy -- If I knew the depth of the tree, I could call patient depthInt g
-optimal (Branch a l r) = optimal (greedy (Branch a l r))
+optimal :: Strategy
+optimal (Branch a l r) = if optimal l < optimal r then optimal l else optimal r
 optimal (Finish a) = Finish a
 
 metaCompose :: Strategy -> Strategy -> Strategy
