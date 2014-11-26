@@ -17,9 +17,7 @@ data Command =
   | Allow (User, Table)
   | Insert (Table, [(Column, Integer)])
   deriving (Eq, Show)
-
-
-
+  
 example = [
     Add (User "Alice"),
     Add (User "Bob"),
@@ -76,10 +74,6 @@ validateHelper c = if (length c) > 1 -- then if isCreated (concat((splitAt 1 c) 
 
 checkIsCreated :: ([Command], [Command]) -> Bool
 checkIsCreated (l, c) = isCreated c (head l)
-
-
-
-
 
 -- REAL FUNCTIONS
 

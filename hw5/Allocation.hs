@@ -5,6 +5,12 @@
 -- Allocation.hs
 --
 
+{-  
+
+	DATA
+
+ -}
+
 module Allocation where
 import Data.Function
 import Data.List
@@ -28,6 +34,12 @@ instance Ord Alloc where
 instance Ord Graph where
 	g < g' = alloc(g) < alloc(g')
 	g <= g' = alloc(g) <= alloc(g')
+
+{-  
+
+	ALL HELPER FUNCTIONS
+
+ -}
 
 isNonEmpty :: [Item] -> Bool
 isNonEmpty i = null i
@@ -70,6 +82,12 @@ metaRepeatHelper c n s1 g
 
 fitHelper :: Graph -> Strategy -> Alloc
 fitHelper g s = alloc (s g)
+
+{-  
+
+	ALL BASELINES FUNCTIONS
+
+ -}
 
 graph :: Alloc -> [Item] -> Graph
 graph a i 
@@ -117,9 +135,33 @@ metaGreedy s1 s2 g = greedy (Branch (Alloc 0 0) (s1 g) (s2 g))
 impatient :: Integer -> Strategy
 impatient n g = (metaRepeat n greedy) g
 
-fit :: Graph -> [Strategy] -> [Alloc]
---fit g i = minimumBy (compare `on` alloc) (map (fitHelper g) i)
-fit g i = map (fitHelper g) i
+{-  
+
+	ANSWER TO PART G:
+
+	patient looks through each possible ending node at depth n, and will give the best
+	possible outcome at that depth - when using the patient algorithm, we can be assured
+	that we will receive the best scenario for allocation. In this way, patient is superior to 
+	impatient
+
+	impatient is a greedy algorithm repeated many times, meaning at each step it makes a hyperlocal
+	decision at each node. In this way, impatient is a much faster algorithm than patient (and becomes faster
+	relative to patient with each increasing number of n) as it iteratively goes through each level of a graph - the lookup 
+	time for patient is around nlogn, while for impatient it is n, if n == depth. While it is fast, the end result may not 
+	necessarily be the best algorithm at that depth, as a "good" greedy decision at a node may lead to a "worse" result 
+	in the long term. However, it is superior to patient in terms of speed and calculation time.
+
+ -}
+
+{-  
+
+	EXTRA CREDIT BASELINE FUNCTION
+
+ -}
+
+fit :: Graph -> [Strategy] -> Strategy
+fit g i = minimumBy (compare `on` (fitHelper g)) i
+
 
 
 
