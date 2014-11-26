@@ -19,6 +19,8 @@ data Graph =
   | Finish Alloc
   deriving (Eq, Show)
 
+type Strategy = Graph -> Graph
+
 instance Ord Alloc where
 	(Alloc l r) < (Alloc l_ r_) = abs(l-r) < abs(l_-r_)
 	(Alloc l r) <= (Alloc l_ r_) = abs(l-r) <= abs(l_-r_)
@@ -66,9 +68,8 @@ metaRepeatHelper c n s1 g
 	| c == n = s1 g
 	| otherwise = s1 (metaRepeatHelper (c+1) n s1 g)
 
---fitHelper :: Strategy -> Integer
---fitHelper  (Branch (Alloc l r) _ _) _ = abs(l-r)
---fitHelper  (Finish (Alloc l r)) _ = abs(l-r)
+fitHelper :: Graph -> Strategy -> Alloc
+fitHelper g s = alloc (s g)
 
 graph :: Alloc -> [Item] -> Graph
 graph a i 
@@ -85,8 +86,6 @@ final (Finish a) = [a]
 
 depth :: Integer -> Graph -> [Alloc]
 depth n g = depthHelper 0 n g []
-
-type Strategy = Graph -> Graph
 
 greedy :: Strategy
 greedy (Branch a l r)
@@ -118,8 +117,9 @@ metaGreedy s1 s2 g = greedy (Branch (Alloc 0 0) (s1 g) (s2 g))
 impatient :: Integer -> Strategy
 impatient n g = (metaRepeat n greedy) g
 
---fit :: Graph -> [Strategy] -> Strategy
---fit g i = minimumBy (compare `on` (fitHelper g)) i
+fit :: Graph -> [Strategy] -> [Alloc]
+--fit g i = minimumBy (compare `on` alloc) (map (fitHelper g) i)
+fit g i = map (fitHelper g) i
 
 
 
