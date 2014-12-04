@@ -17,7 +17,7 @@ data Command =
   | Allow (User, Table)
   | Insert (Table, [(Column, Integer)])
   deriving (Eq, Show)
-  
+
 example = [
     Add (User "Alice"),
     Add (User "Bob"),
