@@ -23,23 +23,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="hw1.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/hw1.py">
+      <file leaf-file-name="hw4-tests.py" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/hw4/hw4-tests.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.9013158" vertical-offset="1012" max-vertical-offset="1665">
-              <caret line="104" column="4" selection-start-line="104" selection-start-column="4" selection-end-line="104" selection-end-column="4" />
-              <folding>
-                <element signature="e#0#11#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="hw1-tests.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/hw1-tests.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="480" max-vertical-offset="1335">
-              <caret line="32" column="25" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.7963801" vertical-offset="582" max-vertical-offset="1260">
+              <caret line="74" column="4" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
               <folding />
             </state>
           </provider>
@@ -55,16 +43,38 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/hw1-tests.py" />
         <option value="$PROJECT_DIR$/hw1.py" />
+        <option value="$PROJECT_DIR$/hw1-tests.py" />
+        <option value="$PROJECT_DIR$/hw2.py" />
+        <option value="$PROJECT_DIR$/hw2-tests.py" />
+        <option value="$PROJECT_DIR$/parse.py" />
+        <option value="$PROJECT_DIR$/interpret.py" />
+        <option value="$PROJECT_DIR$/hw2/hw2-tests.py" />
+        <option value="$PROJECT_DIR$/hw2/interpret.py" />
+        <option value="$PROJECT_DIR$/hw3/hw3-tests.py" />
+        <option value="$PROJECT_DIR$/hw3/hw3-test.py" />
+        <option value="$PROJECT_DIR$/hw3/machine.py" />
+        <option value="$PROJECT_DIR$/hw3/interpret.py" />
+        <option value="$PROJECT_DIR$/hw3/compile.py" />
+        <option value="$PROJECT_DIR$/midterm/test.py" />
+        <option value="$PROJECT_DIR$/hw3/parse.py" />
+        <option value="$PROJECT_DIR$/midterm/machine.py" />
+        <option value="$PROJECT_DIR$/midterm/parse.py" />
+        <option value="$PROJECT_DIR$/midterm/interpret.py" />
+        <option value="$PROJECT_DIR$/midterm/optimize.py" />
+        <option value="$PROJECT_DIR$/midterm/validate.py" />
+        <option value="$PROJECT_DIR$/midterm/analyze.py" />
+        <option value="$PROJECT_DIR$/midterm/compile.py" />
+        <option value="$PROJECT_DIR$/hw4/parse.py" />
+        <option value="$PROJECT_DIR$/hw4/hw4-tests.py" />
+        <option value="$PROJECT_DIR$/hw4/interpret.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="10" />
-    <option name="y" value="22" />
-    <option name="width" value="1260" />
-    <option name="height" value="705" />
+    <option name="y" value="23" />
+    <option name="width" value="1280" />
+    <option name="height" value="773" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
     <OptionsSetting value="true" id="Add" />
@@ -117,8 +127,115 @@
   </component>
   <component name="PropertiesComponent">
     <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
+    <property name="FullScreen" value="false" />
+    <property name="recentsLimit" value="5" />
   </component>
-  <component name="RunManager">
+  <component name="PyConsoleOptionsProvider">
+    <option name="myPythonConsoleState">
+      <console-settings />
+    </option>
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/hw1" />
+      <recent name="$PROJECT_DIR$/hw2" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.interpret">
+    <configuration default="false" name="hw3-tests" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/hw3" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="CS320_KitchenSink" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/hw3/hw3-tests.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="compile" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/midterm" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="CS320_KitchenSink" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/midterm/compile.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="analyze" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/midterm" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="CS320_KitchenSink" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/midterm/analyze.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="validate" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/midterm" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="CS320_KitchenSink" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/midterm/validate.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <method />
+    </configuration>
+    <configuration default="false" name="interpret" type="PythonConfigurationType" factoryName="Python" temporary="true">
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/hw4" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <module name="CS320_KitchenSink" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/hw4/interpret.py" />
+      <option name="PARAMETERS" value="" />
+      <RunnerSettings RunnerId="PyDebugRunner" />
+      <RunnerSettings RunnerId="PythonRunner" />
+      <ConfigurationWrapper RunnerId="PyDebugRunner" />
+      <ConfigurationWrapper RunnerId="PythonRunner" />
+      <method />
+    </configuration>
     <configuration default="true" type="tests" factoryName="py.test">
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -240,9 +357,27 @@
       <option name="USE_PATTERN" value="false" />
       <method />
     </configuration>
-    <list size="0" />
+    <list size="5">
+      <item index="0" class="java.lang.String" itemvalue="Python.hw3-tests" />
+      <item index="1" class="java.lang.String" itemvalue="Python.compile" />
+      <item index="2" class="java.lang.String" itemvalue="Python.analyze" />
+      <item index="3" class="java.lang.String" itemvalue="Python.validate" />
+      <item index="4" class="java.lang.String" itemvalue="Python.interpret" />
+    </list>
+    <recent_temporary>
+      <list size="5">
+        <item index="0" class="java.lang.String" itemvalue="Python.interpret" />
+        <item index="1" class="java.lang.String" itemvalue="Python.analyze" />
+        <item index="2" class="java.lang.String" itemvalue="Python.validate" />
+        <item index="3" class="java.lang.String" itemvalue="Python.compile" />
+        <item index="4" class="java.lang.String" itemvalue="Python.hw3-tests" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
       <changelist id="f252d8a0-260b-4f1e-8a8a-f5f433195b65" name="Default" comment="" />
@@ -252,23 +387,23 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="10" y="22" width="1260" height="705" extended-state="0" />
-    <editor active="true" />
+    <frame x="0" y="23" width="1280" height="773" extended-state="6" />
+    <editor active="false" />
     <layout>
-      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.25" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24609375" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4474432" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.328125" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32861635" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
@@ -291,24 +426,394 @@
     </option>
   </component>
   <component name="XDebuggerManager">
-    <breakpoint-manager />
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/hw2/interpret.py</url>
+          <line>165</line>
+          <option name="timeStamp" value="16" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/midterm/interpret.py</url>
+          <line>90</line>
+          <option name="timeStamp" value="38" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/midterm/compile.py</url>
+          <line>114</line>
+          <option name="timeStamp" value="39" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="python-line">
+          <url>file://$PROJECT_DIR$/midterm/validate.py</url>
+          <line>50</line>
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+      </breakpoints>
+      <option name="time" value="58" />
+    </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/hw1-tests.py">
+    <entry file="file://$PROJECT_DIR$/hw4/hw4-tests.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="165" max-vertical-offset="1335">
-          <caret line="32" column="25" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="25" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1260">
+          <caret line="74" column="4" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/hw1.py">
+    <entry file="file://$PROJECT_DIR$/hw3/compile.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.9013158" vertical-offset="1012" max-vertical-offset="1665">
-          <caret line="104" column="4" selection-start-line="104" selection-start-column="4" selection-end-line="104" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="1158" max-vertical-offset="1965">
+          <caret line="106" column="56" selection-start-line="106" selection-start-column="56" selection-end-line="106" selection-end-column="56" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1402" max-vertical-offset="2010">
+          <caret line="125" column="38" selection-start-line="125" selection-start-column="38" selection-end-line="125" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/interpret.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="465" max-vertical-offset="2310">
+          <caret line="63" column="28" selection-start-line="38" selection-start-column="4" selection-end-line="63" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/compile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="1155">
+          <caret line="10" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1402" max-vertical-offset="2010">
+          <caret line="125" column="38" selection-start-line="125" selection-start-column="38" selection-end-line="125" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/compile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="150" max-vertical-offset="1155">
+          <caret line="10" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1402" max-vertical-offset="2010">
+          <caret line="125" column="38" selection-start-line="125" selection-start-column="38" selection-end-line="125" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/compile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1155">
+          <caret line="10" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="71" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1402" max-vertical-offset="2010">
+          <caret line="125" column="38" selection-start-line="125" selection-start-column="38" selection-end-line="125" selection-end-column="38" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/compile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="210" max-vertical-offset="330">
+          <caret line="14" column="17" selection-start-line="14" selection-start-column="17" selection-end-line="14" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1650" max-vertical-offset="1800">
+          <caret line="110" column="26" selection-start-line="110" selection-start-column="26" selection-end-line="110" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/parse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1492" max-vertical-offset="2100">
+          <caret line="134" column="4" selection-start-line="134" selection-start-column="4" selection-end-line="134" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="727" max-vertical-offset="1800">
+          <caret line="110" column="26" selection-start-line="110" selection-start-column="26" selection-end-line="110" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/parse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2100">
+          <caret line="134" column="4" selection-start-line="134" selection-start-column="4" selection-end-line="134" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="870" max-vertical-offset="960">
+          <caret line="58" column="5" selection-start-line="58" selection-start-column="5" selection-end-line="58" selection-end-column="5" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/compile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="105">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw1/hw1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="3795">
+          <caret line="24" column="45" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw2/parse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="750" max-vertical-offset="3345">
+          <caret line="44" column="10" selection-start-line="44" selection-start-column="10" selection-end-line="44" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw2/interpret.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1110" max-vertical-offset="2655">
+          <caret line="74" column="44" selection-start-line="74" selection-start-column="44" selection-end-line="74" selection-end-column="44" />
           <folding>
-            <element signature="e#0#11#0" expanded="true" />
+            <element signature="e#0#11#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw2/hw2-tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1791" max-vertical-offset="2160">
+          <caret line="136" column="3" selection-start-line="136" selection-start-column="3" selection-end-line="136" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw1/hw1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="360" max-vertical-offset="3795">
+          <caret line="24" column="45" selection-start-line="24" selection-start-column="4" selection-end-line="24" selection-end-column="45" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw2/parse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="750" max-vertical-offset="3345">
+          <caret line="44" column="10" selection-start-line="44" selection-start-column="10" selection-end-line="44" selection-end-column="10" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw2/interpret.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1680" max-vertical-offset="2655">
+          <caret line="124" column="34" selection-start-line="124" selection-start-column="34" selection-end-line="124" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#11#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw2/hw2-tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1791" max-vertical-offset="2160">
+          <caret line="136" column="3" selection-start-line="136" selection-start-column="3" selection-end-line="136" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw1/hw1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2715" max-vertical-offset="3795">
+          <caret line="92" column="24" selection-start-line="92" selection-start-column="23" selection-end-line="92" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw2/parse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2430" max-vertical-offset="3375">
+          <caret line="133" column="0" selection-start-line="133" selection-start-column="0" selection-end-line="133" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw2/hw2-tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2160">
+          <caret line="85" column="3" selection-start-line="85" selection-start-column="3" selection-end-line="85" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw1/hw1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1057" max-vertical-offset="1665">
+          <caret line="98" column="29" selection-start-line="98" selection-start-column="29" selection-end-line="98" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw1/hw1-tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="480" max-vertical-offset="1335">
+          <caret line="32" column="25" selection-start-line="32" selection-start-column="12" selection-end-line="32" selection-end-column="25" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw1/hw1-tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.4398827" vertical-offset="0" max-vertical-offset="1335">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw2/hw2-tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.40336135" vertical-offset="15" max-vertical-offset="2190">
+          <caret line="17" column="24" selection-start-line="17" selection-start-column="24" selection-end-line="17" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw2/interpret.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="757" max-vertical-offset="2700">
+          <caret line="54" column="0" selection-start-line="54" selection-start-column="0" selection-end-line="54" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#11#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/compile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.3769634" vertical-offset="1845" max-vertical-offset="3120">
+          <caret line="37" column="16" selection-start-line="37" selection-start-column="16" selection-end-line="40" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///Library/Frameworks/Python.framework/Versions/3.4/lib/python3.4/re.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="2768" max-vertical-offset="5580">
+          <caret line="195" column="0" selection-start-line="195" selection-start-column="0" selection-end-line="195" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw1/hw1.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.60732985" vertical-offset="3143" max-vertical-offset="3780">
+          <caret line="226" column="14" selection-start-line="226" selection-start-column="14" selection-end-line="226" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw2/parse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-1.63089" vertical-offset="2963" max-vertical-offset="3345">
+          <caret line="156" column="11" selection-start-line="156" selection-start-column="4" selection-end-line="156" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/parse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.68586385" vertical-offset="1718" max-vertical-offset="2100">
+          <caret line="132" column="14" selection-start-line="128" selection-start-column="2" selection-end-line="132" selection-end-column="14" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.48026314" vertical-offset="1177" max-vertical-offset="2250">
+          <caret line="59" column="19" selection-start-line="59" selection-start-column="19" selection-end-line="59" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/midterm/parse.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-3.0140846" vertical-offset="1359" max-vertical-offset="1785">
+          <caret line="5" column="26" selection-start-line="5" selection-start-column="26" selection-end-line="5" selection-end-column="26" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/midterm/optimize.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7820823" vertical-offset="1207" max-vertical-offset="1620">
+          <caret line="102" column="4" selection-start-line="102" selection-start-column="4" selection-end-line="102" selection-end-column="4" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/midterm/validate.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="254" max-vertical-offset="945">
+          <caret line="49" column="0" selection-start-line="49" selection-start-column="0" selection-end-line="49" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/midterm/machine.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-0.8639053" vertical-offset="659" max-vertical-offset="1335">
+          <caret line="5" column="1" selection-start-line="5" selection-start-column="1" selection-end-line="5" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/midterm/analyze.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="720" max-vertical-offset="1155">
+          <caret line="70" column="0" selection-start-line="70" selection-start-column="0" selection-end-line="70" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/midterm/compile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1229" max-vertical-offset="1905">
+          <caret line="121" column="25" selection-start-line="121" selection-start-column="25" selection-end-line="121" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/hw3-tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="792" max-vertical-offset="1455">
+          <caret line="69" column="41" selection-start-line="69" selection-start-column="6" selection-end-line="69" selection-end-column="41" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw3/interpret.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.35502958" vertical-offset="45" max-vertical-offset="2355">
+          <caret line="19" column="31" selection-start-line="17" selection-start-column="4" selection-end-line="19" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/midterm/interpret.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="165" max-vertical-offset="1455">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="10" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/helpers/pydev/_pydev_execfile.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="284" max-vertical-offset="645">
+          <caret line="37" column="0" selection-start-line="37" selection-start-column="0" selection-end-line="37" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/hw4/hw4-tests.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.7963801" vertical-offset="582" max-vertical-offset="1260">
+          <caret line="74" column="4" selection-start-line="74" selection-start-column="4" selection-end-line="74" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>

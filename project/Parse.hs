@@ -67,14 +67,14 @@ instance Parseable Stmt where
               let Just (s, ts) = r'
               in Just (Assign x e s, ts)
     else if t == "print" && length ts > 1 then
-      --let d = ts!!0
-      let r = parse (head ts)
+      let x = ts!!0
+          r = parse ([head ts])
       in if r == Nothing then Nothing else
-        let Just (e, ts) = r
-            r' = parse (tail ts)
-        in if r' == Nothing || ts!!0 /= ";" then Nothing else
-          let Just (s, ts) = r'
-          in Just (Print e s, ts)
+          let Just (e, ts) = r
+              r' = parse (tail ts)
+          in if r' == Nothing || ts!!0 /= ";" then Nothing else
+              let Just (s, ts) = r'
+              in Just (Print e s, ts)
     else
       Nothing
   parse _ = Nothing

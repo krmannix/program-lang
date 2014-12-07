@@ -53,7 +53,6 @@ instance Foldable Stmt where
   fold f var b (Print    e s) = f [fold f var b e, fold f var b s] -- Finish this definition for Problem #2, part (a).
   fold f var b (Assign x e s) = f [fold f var b e, fold f var b s]
   fold f var b (End)          = b
-  fold f var b _              = b
 
   
 
