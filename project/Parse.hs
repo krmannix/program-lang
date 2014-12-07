@@ -26,6 +26,16 @@ instance Parseable Exp where
                   let Just (e2, ts) = r
                   in if ts!!0 /= ")" then Nothing else
                       Just (And e1 e2, tail ts)
+    else if t == "or" && length ts > 0 && ts!!0 == "(" then
+      let r = parse (tail ts)
+      in if r == Nothing then Nothing else
+          let Just (e1, ts) = r
+          in if length ts == 0 || ts!!0 /= "," then Nothing else
+              let r = parse (tail ts)
+              in if r == Nothing then Nothing else
+                  let Just (e2, ts) = r
+                  in if ts!!0 /= ")" then Nothing else
+                      Just (Or e1 e2, tail ts)
     else if t == "not" && length ts > 0 && ts!!0 == "(" then
       let r = parse (tail ts)
       in if r == Nothing then Nothing else
@@ -34,11 +44,13 @@ instance Parseable Exp where
               Just (Not e, tail ts)
     else if t == "true" then
       Just (Value True, ts)
+    else if t == "false" then
+      Just (Value True, ts)
     else if subset t "abcdefghijklmnopqrstuvwxyz" then
       Just (Variable t, ts)
     else
       Nothing
-  parse _ = Nothing
+  --parse _ = Nothing
 
 -- Fill in the missing cases in the definition below for Problem #1, part (a).
 instance Parseable Stmt where
@@ -54,6 +66,15 @@ instance Parseable Stmt where
           in if r' == Nothing || ts!!0 /= ";" then Nothing else
               let Just (s, ts) = r'
               in Just (Assign x e s, ts)
+    else if t == "print" && length ts > 1 then
+      --let d = ts!!0
+      let r = parse (head ts)
+      in if r == Nothing then Nothing else
+        let Just (e, ts) = r
+            r' = parse (tail ts)
+        in if r' == Nothing || ts!!0 /= ";" then Nothing else
+          let Just (s, ts) = r'
+          in Just (Print e s, ts)
     else
       Nothing
   parse _ = Nothing
@@ -73,6 +94,6 @@ subset xs ys = and [x `elem` ys | x <- xs]
 example = fst $ (\(Just x)->x) $ parse (tokenize "assign x := not(and(true, false)); print x; assign a := not(and(x, x)); print a; end;") :: Stmt
 
 -- Problem 1, part (a).
-kindOfParser = "???" -- "backtracking" or "predictive"
+kindOfParser = "predictive" -- "backtracking" or "predictive"
 
 -- eof
