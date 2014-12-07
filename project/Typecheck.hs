@@ -1,4 +1,4 @@
-module Typecheck where
+module TypeCheck where
 
 import AbstractSyntax
 import Parse

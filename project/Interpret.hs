@@ -6,31 +6,36 @@ import TypeCheck
 
 eval :: [(String, Bool)] -> Exp -> Bool
 eval env (And e1 e2) = 
-	let (env', o) = eval env e1
-	let (env'', p) = eval env' e2
-	o && p
+	let o = eval env e1
+	    p = eval env e2
+	in o && p
 eval env (Or e1 e2) = 
-	let (env', o) = eval env e1
-	let (env'', p) = eval env' e2
-	o || p
+	let o = eval env e1
+	    p = eval env e2
+	in o || p
 eval env (Not e) = 
-	let (env', o) = eval env e
-	not o
-eval _ _ = False -- Implement for Problem #1, part (b).
+	let o = eval env e
+	in not o
+eval env (Variable v) =
+	let c = [b | (v', b) <- env, v' == v]
+	in if length c > 0 then head c else False
+eval env (Value b) = b
 
 
 exec :: [(String, Bool)] -> Stmt -> ([(String, Bool)], Output)
 exec env (Print    e s) =
   let (env', o) = exec env s
   in (env', [eval env e] ++ o)
-exec env (End _) = (env, [])
+exec env  End           = (env, [])
 exec env (Assign x e s) = 
-	let (env', o) = eval env e
-	in (env' ++ (x, o), [exec env s])
-exec env _ = (env, []) -- Implement the Assign and End cases for Problem #1, part (b).
+	let o = eval env e
+	    env' = env ++ [(x, o)]
+	in exec env' s
 
 interpret :: Stmt -> Maybe Output
-interpret s = if typeOf (chk [] s) == Just Void then Maybe interpret [] s else Nothing
-interpret _ = Nothing -- Implement for Problem #1, part (d).
+interpret s = if chk [] s == Just Void then 
+				let (env, o) = exec [] s 
+				in Just o
+			  else Nothing
 
 -- eof

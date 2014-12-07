@@ -68,7 +68,7 @@ instance Parseable Stmt where
               in Just (Assign x e s, ts)
     else if t == "print" && length ts > 1 then
       let x = ts!!0
-          r = parse ([head ts])
+          r = parse (ts)
       in if r == Nothing then Nothing else
           let Just (e, ts) = r
               r' = parse (tail ts)

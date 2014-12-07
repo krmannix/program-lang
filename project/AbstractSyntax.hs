@@ -60,6 +60,7 @@ class HasVariables a where
   vars :: a -> [Var]
 
 instance HasVariables Stmt where
+  --vars (Print    e s) = fold [] (++) e s
   vars _ = [] -- Implement for Problem #2, part (a).
 
 instance HasVariables Exp where
@@ -68,7 +69,12 @@ instance HasVariables Exp where
 
 
 unbound :: Stmt -> [Var]
-unbound _ = [] -- Implement for Problem #2, part (b).
+unbound End = []
+unbound (Print    e s) = unboundExp e `union` unbound s
+unbound (Assign x e s) = unboundExp e `union` (unbound s \\ [x])
+
+unboundExp :: Exp -> [Var]
+unboundExp _ = []
 
 
 
