@@ -51,7 +51,7 @@ instance Foldable Exp where
 
 instance Foldable Stmt where
   fold f var b (Print    e s) = f [fold f var b e, fold f var b s] -- Finish this definition for Problem #2, part (a).
-  fold f var b (Assign x e s) = f [fold f var b e, fold f var b s]
+  fold f var b (Assign x e s) = f [var x, fold f var b e, fold f var b s]
   fold f var b (End)          = b
 
   
@@ -74,14 +74,21 @@ unbound (Print    e s) = unboundExp e `union` unbound s
 unbound (Assign x e s) = unboundExp e `union` (unbound s \\ [x])
 
 unboundExp :: Exp -> [Var]
-unboundExp _ = []
+unboundExp (Variable x ) = [x]
+unboundExp (Value    v ) = []
+unboundExp (And   e1 e2) = (unboundExp e1) ++ (unboundExp e2)
+unboundExp (Or    e1 e2) = (unboundExp e1) ++ (unboundExp e2)
+unboundExp (Not   e    ) = unboundExp e
+
 
 
 
 type Interference = [(Var, Var)]
 
 interference :: Stmt -> Interference
-interference _ = [] -- Implement for Problem #2, part (c).
+interference End = []
+interference (Print    e s) = interference s
+interference (Assign x e s) = [ (x_, y_) | (x_, y_) <- (interference s), x_ /= y_, y_ `elem` (unbound s), y_ `elem` (unboundExp e)]
 
 
 -- eof

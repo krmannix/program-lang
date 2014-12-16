@@ -50,7 +50,7 @@ instance Parseable Exp where
       Just (Variable t, ts)
     else
       Nothing
-  --parse _ = Nothing
+  parse _ = Nothing
 
 -- Fill in the missing cases in the definition below for Problem #1, part (a).
 instance Parseable Stmt where
@@ -92,6 +92,8 @@ subset xs ys = and [x `elem` ys | x <- xs]
 
 -- Example of a concrete syntax string being parsed.
 example = fst $ (\(Just x)->x) $ parse (tokenize "assign x := not(and(true, false)); print x; assign a := not(and(x, x)); print a; end;") :: Stmt
+t1 = fst $ (\(Just x)->x) $ parse (tokenize "print or(false, false); end;") :: Stmt
+
 
 -- Problem 1, part (a).
 kindOfParser = "predictive" -- "backtracking" or "predictive"

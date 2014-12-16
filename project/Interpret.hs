@@ -37,5 +37,11 @@ interpret s = if chk [] s == Just Void then
 				let (env, o) = exec [] s 
 				in Just o
 			  else Nothing
+			  
+--Why exec & eval won't get invalid inputs:
+--Due to the typechecking both in this project and by Haskell, eval and exec will never be reached by an type error, and will have all
+--possible combinations of inputs that could be given to them covered. An error would occur before the eval or exec functions could be reached,
+--as things such as unbound variables would be checked for through the type checking, to ensure that when (for example) when an Assign
+--statement is called, that it has both a variable and a proper expression to assign to the variable. 
 
 -- eof
