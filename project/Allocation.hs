@@ -11,8 +11,7 @@ data Tree a =
 
 foldTree :: ([a] -> a) -> Tree a -> a
 foldTree f (Finish x) = x
-foldTree f (Branch x (y:ys))  = foldTree f y --foldTree f y
--- foldTree f c = ??? -- Complete for Problem #3, part (a).
+foldTree f (Branch x (y:ys))  = foldTree f y 	--FINISH THIS
 
 smallest :: Ord a => Tree a -> a
 smallest (Finish x) = x
@@ -26,14 +25,15 @@ data Allocation =
     Alloc [(Var, Register)]
   deriving (Eq, Show)
 
+instance Ord Allocation where
+	(Alloc l) <  (Alloc r) = length (nub [r | (v, r) <- l]) >  length (nub [r_ | (v_, r_) <- r])
+	(Alloc l) <= (Alloc r) = length (nub [r | (v, r) <- l]) >= length (nub [r_ | (v_, r_) <- r])
 
--- Add instance declaration for Problem #3, part (c) here.
-
-
---allocations :: (Interference, [Register]) -> Allocation -> [Var] -> Tree Allocation
---allocations (conflicts, rs) (Alloc a) (x:xs) = ??? -- Complete for Problem #3, part (d).
+allocations :: (Interference, [Register]) -> Allocation -> [Var] -> Tree Allocation
+allocations (conflicts, rs) (Alloc a) (x:xs) = ??? -- Complete for Problem #3, part (d).
 
 -- Useful helper function.
+-- Takes a variable and returns registers it can be used in
 unconflicted ::(Interference, [Register]) -> Allocation -> Var -> [Register]
 unconflicted (conflicts, rs) (Alloc a) x = rs \\ [r | (y,r) <- a, (x,y) `elem` conflicts || (y,x) `elem` conflicts]
 

@@ -6,6 +6,13 @@ data Register =
     Register Integer
   deriving (Eq, Show)
 
+instance Ord Register where
+	(Register i) <  (Register j) = i < j
+	(Register i) <= (Register j) = i <= j
+
+instance Num Register where
+	fromInteger n = Register n
+	(Register x) + (Register y) = Register (x + y)
 
 -- Add instance declarations here for Problem #4, part (a).  
 
@@ -30,7 +37,7 @@ register (INIT _     i) = register i
 register (FLIP _     i) = register i
 register (COPY _ _   i) = register i
 register (NAND _ _ _ i) = register i
-register (STOP r    )   = r
+register (STOP r      ) = r
 
 nand :: Bool -> Bool -> Bool
 nand True True = False
