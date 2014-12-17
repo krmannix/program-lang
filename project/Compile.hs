@@ -29,19 +29,10 @@ instance Compilable Exp where
   	   let x = (maximum [y | (_, y) <- xrs]) + 1
   	in let l = comp (("_",  x    ):xrs) e1
   	in let r = comp (("__", x + 1):xrs) e2
-  	in NAND (register l) (register l) l (NAND (register r) (register r) r (NAND (register l) (register r) x (STOP x)))
-  comp xrs (NOT    v) = 
-  	   let x = (maximum [y | (_, y) <- xrs]) + 1
-  	in FLIP (register ())
-
-
-
-  --comp xrs (Value    v) = 
- 	--if v == False then
-  --		FLIP 
-  --comp xrs (Not 	 n) = 
-  --	let k = FLIP (comp xrs n) 
---  comp _   _ = STOP (Register -1) -- Complete missing cases for Problem #4, part (b).
+  	in FLIP (register l) (FLIP (register r) (NAND (register l) (register r) x (STOP x)))
+  comp xrs (Not    v) = 
+  	   let x = register (comp xrs v) --(maximum [y | (_, y) <- xrs]) + 1
+  	in FLIP (x) (STOP x)
 
 --compileMin :: Stmt -> Maybe Instruction
 --compileMin _ = STOP (Register -1) -- Complete for Problem #4, part (c).
