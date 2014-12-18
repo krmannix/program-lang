@@ -27,10 +27,16 @@ exec env (Print    e s) =
   let (env', o) = exec env s
   in (env', [eval env e] ++ o)
 exec env  End           = (env, [])
-exec env (Assign x e s) = 
+exec env (Assign x e s) =
 	let o = eval env e
-	    env' = env ++ [(x, o)]
-	in exec env' s
+	in let ch = [(x_, v) | (x_, v) <- env, x_ == x]
+	in if null ch
+		then let env' = env ++ [(x, o)]
+			in exec env' s
+		else let tmp = [(x_, v) | (x_, v) <- env, x_ /= x]
+			in let env' = tmp ++ [(x, o)]
+			in exec env' s
+	
 
 interpret :: Stmt -> Maybe Output
 interpret s = if chk [] s == Just Void then 

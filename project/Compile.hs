@@ -3,6 +3,7 @@ module Compile where
 import AbstractSyntax
 import Allocation
 import Machine
+import TypeCheck
 
 class Compilable a where
   comp :: [(Var, Register)] -> a -> Instruction
@@ -34,10 +35,25 @@ instance Compilable Exp where
   	   let x = register (comp xrs v) --(maximum [y | (_, y) <- xrs]) + 1
   	in FLIP (x) (STOP x)
 
---compileMin :: Stmt -> Maybe Instruction
---compileMin _ = STOP (Register -1) -- Complete for Problem #4, part (c).
+compileMin :: Stmt -> Maybe Instruction
+compileMin s =
+  if chk [] s == Just Void then
+       let unboundVars = unbound s 
+    in let numUnbound  = [(Register (toInteger x)) | x <- [0..length unboundVars]]
+    in let interferenceVars = interference s
+    in let Alloc x = smallest (allocations (interferenceVars, numUnbound) (Alloc []) unboundVars)
+    in Just (comp x s)
+  else Nothing
 
---compileMax :: Integer -> Stmt -> Maybe Instruction
---compileMax _ _ = Nothing -- Complete for Problem #4, part (d).
+compileMax :: Integer -> Stmt -> Maybe Instruction
+compileMax k s =  
+  if chk [] s == Just Void then
+       let unboundVars = unbound s 
+    in let numUnbound  = [(Register (toInteger x)) | x <- [0..length unboundVars]]
+    in let interferenceVars = interference s
+    in let allocs = concatAllLeaves (allocations (interferenceVars, numUnbound) (Alloc []) unboundVars)
+    in let (Alloc fa) = getK (fromInteger k) allocs
+    in Just (comp fa s)
+  else Nothing
 
 -- eof

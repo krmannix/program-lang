@@ -28,6 +28,9 @@ data Type =
 lookup' :: Eq a => a -> [(a, b)] -> b
 lookup' x ((x',i) : rest) = if x == x' then i else lookup' x rest
 
+toList :: a -> [a]
+toList l = [l]
+
 -- Type class for a polymorphic fold function on abstract syntax trees.
 --
 --  * The first argument is the aggregator for combining
@@ -53,25 +56,20 @@ instance Foldable Stmt where
   fold f var b (Print    e s) = f [fold f var b e, fold f var b s] -- Finish this definition for Problem #2, part (a).
   fold f var b (Assign x e s) = f [var x, fold f var b e, fold f var b s]
   fold f var b (End)          = b
-
   
-
 class HasVariables a where
   vars :: a -> [Var]
 
 instance HasVariables Stmt where
-  --vars (Print    e s) = fold [] (++) e s
-  vars _ = [] -- Implement for Problem #2, part (a).
+  vars s = nub (fold concat toList [] s)
 
 instance HasVariables Exp where
-  vars _ = [] -- Implement for Problem #2, part (a).
-
-
+  vars s = nub (fold concat toList [] s)
 
 unbound :: Stmt -> [Var]
 unbound End = []
-unbound (Print    e s) = unboundExp e `union` unbound s
-unbound (Assign x e s) = unboundExp e `union` (unbound s \\ [x])
+unbound (Print    e s) = nub (unboundExp e `union` unbound s)
+unbound (Assign x e s) = nub (unboundExp e `union` (unbound s \\ [x]))
 
 unboundExp :: Exp -> [Var]
 unboundExp (Variable x ) = [x]
@@ -79,9 +77,6 @@ unboundExp (Value    v ) = []
 unboundExp (And   e1 e2) = (unboundExp e1) ++ (unboundExp e2)
 unboundExp (Or    e1 e2) = (unboundExp e1) ++ (unboundExp e2)
 unboundExp (Not   e    ) = unboundExp e
-
-
-
 
 type Interference = [(Var, Var)]
 
